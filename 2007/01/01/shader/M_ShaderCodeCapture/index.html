@@ -1,0 +1,930 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/wild/Logo/C++_Logo_03.png">
+  <link rel="icon" href="/wild/Logo/C++_Logo_03.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kyle Zhou">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Dev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Code Capture">
+<meta property="og:url" content="https://automask.github.io/wild/2007/01/01/shader/M_ShaderCodeCapture/index.html">
+<meta property="og:site_name" content="Wild Wind | 风起南天">
+<meta property="og:description" content="Dev">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2006-12-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-12-02T12:28:27.905Z">
+<meta property="article:author" content="Kyle Zhou">
+<meta property="article:tag" content="Dev">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Code Capture - Wild Wind | 风起南天</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/wild/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/wild/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/wild/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"automask.github.io","root":"/wild/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/wild/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/wild/js/utils.js" ></script>
+  <script  src="/wild/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/wild/">
+      <strong>Wild Mind | 心如荒野</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/">
+                <i class="iconfont icon-home-fill"></i>
+                博客
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Shader/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unity/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unreal/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Houdini/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Houdini
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Tags
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Shader/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unity/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unreal/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Houdini/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Houdini
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/PCG/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    PCG
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                关于
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/About/">
+                    <i class="iconfont icon-user-fill"></i>
+                    关于
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/Ref">
+                    <i class="iconfont icon-link-fill"></i>
+                    引用
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/2021/10/27/log/T_Hexo/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Hexo
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/wild/WallPaper/WallPaper_04.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Code Capture"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2007-01-01 00:00" pubdate>
+          2007年1月1日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Code Capture</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="Code-Capture"><a href="#Code-Capture" class="headerlink" title="Code Capture"></a>Code Capture</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/playlist?list=PLFt_AvWsXl0ehjAfLFsp1PGaatzAwo0uK">Code Adventure - Sebastian Lague</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/playlist?list=PLRqwX-V7Uu6ZiZxtDDRCi6uhfTH4FilpH">Coding Challenges</a></li>
+<li><a target="_blank" rel="noopener" href="https://catlikecoding.com/unity/tutorials/rendering/">catlikecoding</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/QianMo/X-PostProcessing-Library">X-PostProcessing-Library</a></li>
+<li><a target="_blank" rel="noopener" href="https://gitee.com/luoxiaoc/computer-graphic-for-unity">罗小c&#x2F;Computer Graphic For Unity</a></li>
+<li><a target="_blank" rel="noopener" href="https://gitee.com/luoxiaoc/procedual-generation">罗小c&#x2F;Procedual Generation</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/@TheArtofCodeIsCool/videos">The Art of Code</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.nvidia.com/gpugems/gpugems/contributors">GPU Gems</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.lfzxb.top/">https://www.lfzxb.top/</a></li>
+<li><a target="_blank" rel="noopener" href="https://aras-p.info/blog/2018/03/28/Daily-Pathtracer-Part-0-Intro/">https://aras-p.info/blog/2018/03/28/Daily-Pathtracer-Part-0-Intro/</a></li>
+<li><a target="_blank" rel="noopener" href="https://iquilezles.org/">https://iquilezles.org/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.kindem.xyz/archives/">https://www.kindem.xyz/archives/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/people/mao-xing-yun/posts">https://www.zhihu.com/people/mao-xing-yun/posts</a></li>
+<li><a target="_blank" rel="noopener" href="https://halisavakis.com/archive/">https://halisavakis.com/archive/</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/puppet_master">https://blog.csdn.net/puppet_master</a><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/puppet_master/article/details/77489948">Unity Shader-Depth</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/puppet_master/article/details/79859678">Unity Shader-GodRay</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/puppet_master/article/details/83582477">Unity Shader-Matcap</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/puppet_master/article/details/83759180">Unity Shader-边缘检测效果</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/people/tc130-52/posts">https://www.zhihu.com/people/tc130-52/posts</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/anesu">https://www.cnblogs.com/anesu</a></li>
+<li><a target="_blank" rel="noopener" href="https://swiftcoder.wordpress.com/">https://swiftcoder.wordpress.com/</a><ul>
+<li><a target="_blank" rel="noopener" href="https://www.trist.am/">https://www.trist.am/</a></li>
+<li><a target="_blank" rel="noopener" href="https://swiftcoder.wordpress.com/planets/isosurface-extraction/">https://swiftcoder.wordpress.com/planets/isosurface-extraction/</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/column/PCGMobile">https://www.zhihu.com/column/PCGMobile</a></li>
+</ul>
+<h3 id="别看着我笑了"><a href="#别看着我笑了" class="headerlink" title="别看着我笑了"></a>别看着我笑了</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Fe411T7qf">复刻Splatoon(喷射战士)的喷涂和潜水机制</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1aY4y1x73j/">【Unity】Marching Squares 原理与应用</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Nt4y187v6/">【Unity】基于GPGPU与Marching Cubes的实时地形破坏</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1uL4y1A7XV">【Unity】基于Job System与Marching Cubes的实时地形破坏</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1oG4y1B7Pu/">【Unity】URP下如何书写Shader及多Pass解决方案</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Ua41137uK/">【Unity】人物描边解决方案</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1yV4y1H7ak/">【Unity Shader】地裂技能和地形的完美贴合</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1XT411572g/">【Unity】平行光的阴影和体积光</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1DB4y1Q7SP/">【Unity】实时阴影与CameraDepthTexture</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV12T4y1q7md/">【Unity】平面反射的原理与实现</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1YZ4y1X7wo">【游戏特效】贴图篇</a></li>
+</ul>
+<h3 id="Depth-Pass"><a href="#Depth-Pass" class="headerlink" title="Depth Pass"></a>Depth Pass</h3><ul>
+<li>深度重建世界坐标Reconstruct World Position With Depth</li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1BN4y1L7PF">【Unity】抓取深度缓冲获取深度图并重建法线</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/puppet_master/article/details/77489948">Unity Shader-深度相关知识总结与效果实现（LinearDepth，Reverse Z，世界坐标重建，软粒子，高度雾，运动模糊，扫描线效果）</a></li>
+<li>ShadowCaster这个pass实际上是有两个用处<ul>
+<li>第一个是屏幕空间的深度使用该pass进行渲染</li>
+<li>另一方面就是ShadowMap中光方向的深度也是使用该pass进行渲染的</li>
+</ul>
+</li>
+</ul>
+<h3 id="Shader"><a href="#Shader" class="headerlink" title="Shader"></a>Shader</h3><ul>
+<li><p>Github</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://en.wikibooks.org/wiki/Cg_Programming/Unity">Cg Programming&#x2F;Unity</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/lindenreid/Unity-Shader-Tutorials/tree/master/Assets/Materials/Shaders">https://github.com/lindenreid/Unity-Shader-Tutorials/tree/master/Assets/Materials/Shaders</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ciel1012/Unity-ShaderTest/tree/main/Assets">https://github.com/ciel1012/Unity-ShaderTest/tree/main/Assets</a></li>
+</ul>
+</li>
+<li><p>Kerry TA Tutorial</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=CJKGIXJjqlg">Plasma shader in Unity</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=QF5hzdWgCLc">Create Distorting Lava Shader In Unity</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/10707223/channel/collectiondetail?sid=72563">Shadertoy教程</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1zS4y157de">Shadertoy教程09——矩形的SDF函数</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1KL4y1c79A">Shadertoy教程16——环境光遮蔽</a></p>
+</li>
+</ul>
+<h3 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/7398208/video">TA百人专题</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/244119227/video">AshBound</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/1963297471/video">CG_AI千军</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/10707223/video">pdcxs</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/108393888/video">CG-Tube</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/296774819/video">Game艺视界</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/27650247/video">papalqi</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/5862663/video">最强人类韦少</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/38388414/video">嗨趣学heronuke</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/368885854/video">VFXFORCE</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/1022168482/video">CG魔影视效</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/391747545/video">EV_LI</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/155950275/video">YellowEffects</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/1883682043/video">老不湿CG</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/168173226/video">聆枫LingFeng</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/268142737/video">查拉图斯特拉又说</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/240729203/video">95陈先生</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/22866318/video">陶仁贤TRX</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/514859995/video">梦幻多DUO</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/634931989/video">不捣药的玉兔</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://space.bilibili.com/457739566/video">别看着我笑了</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCbSWe6JrjYlL4LFtg4hpTJA/videos">Benjamin Swee - Custom Unity Shaders</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.youtube.com/c/Acerola_t/videos">Acerola</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.youtube.com/c/Acegikmo/videos">Freya Holmér</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1eP4y1G7qX">Greenery dev part 1 - Setting up _ Unity shader stream</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV11Q4y1U7J7">Greenery dev part 2 - Setting up _ Unity shader stream</a></p>
+</li>
+<li><p>Substance</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PA411j7dm">Substance Designer制作特效贴图</a></p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/wild/tags/Dev/">#Dev</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Code Capture</div>
+      <div>https://automask.github.io/wild/2007/01/01/shader/M_ShaderCodeCapture/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Kyle Zhou</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2007年1月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/wild/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"f9dba89ab6a250cd9cd5","clientSecret":"22c4c67de70580dd90facb24ee875cf337f44541","repo":"wild","owner":"automask","admin":["automask"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'ef056810eead48e39a3948f6542f8dd9'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+
+        <div id="music_div" style="position: fixed; bottom: 0px; left: 0px;">
+
+            <!-- 凡人 -->
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=180 height=80 
+                src="//music.163.com/outchain/player?type=2&id=1465290469&auto=0&height=66">
+            </iframe>
+
+            <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+            <script src="/js/musicshow.js"></script>
+        </div>
+
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/wild/js/events.js" ></script>
+<script  src="/wild/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/wild/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/wild/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/wild/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,880 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/wild/Logo/C++_Logo_03.png">
+  <link rel="icon" href="/wild/Logo/C++_Logo_03.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kyle Zhou">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Graphics.DrawMeshInstancedProcedural()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Shader GPU Instancing">
+<meta property="og:url" content="https://automask.github.io/wild/2022/06/28/lab/S_Unity_Shader_Instancing/index.html">
+<meta property="og:site_name" content="Wild Wind | 风起南天">
+<meta property="og:description" content="Graphics.DrawMeshInstancedProcedural()">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://automask.github.io/wild/Logo/Unity_Logo.png">
+<meta property="article:published_time" content="2022-06-28T02:10:27.000Z">
+<meta property="article:modified_time" content="2022-12-02T12:28:27.902Z">
+<meta property="article:author" content="Kyle Zhou">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Shader">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://automask.github.io/wild/Logo/Unity_Logo.png">
+  
+  
+  
+  <title>Unity Shader GPU Instancing - Wild Wind | 风起南天</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/wild/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/wild/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/wild/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"automask.github.io","root":"/wild/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/wild/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/wild/js/utils.js" ></script>
+  <script  src="/wild/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/wild/">
+      <strong>Wild Mind | 心如荒野</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/">
+                <i class="iconfont icon-home-fill"></i>
+                博客
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Shader/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unity/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unreal/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Houdini/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Houdini
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Tags
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Shader/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unity/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unreal/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Houdini/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Houdini
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/PCG/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    PCG
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                关于
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/About/">
+                    <i class="iconfont icon-user-fill"></i>
+                    关于
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/Ref">
+                    <i class="iconfont icon-link-fill"></i>
+                    引用
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/2021/10/27/log/T_Hexo/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Hexo
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/wild/WallPaper/WallPaper_02.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Unity Shader GPU Instancing"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-06-28 10:10" pubdate>
+          2022年6月28日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          56 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Unity Shader GPU Instancing</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="GPU-Instancing"><a href="#GPU-Instancing" class="headerlink" title="GPU Instancing"></a>GPU Instancing</h3><ul>
+<li>DrawMeshInstanced                 &#x2F;&#x2F; 提供Matrix[]数组，最多绘制1023个对象</li>
+<li>DrawMeshInstancedIndirect         &#x2F;&#x2F; 通过ComputeBuffer提供数据、数量</li>
+<li>bufferWithArgs &#x3D; int[5]<ul>
+<li>index count per instance      &#x2F;&#x2F; 每个实例index数量</li>
+<li>instance count                &#x2F;&#x2F; 实例数量</li>
+<li>start index location          &#x2F;&#x2F; index开始位置</li>
+<li>base vertex location          &#x2F;&#x2F; vertex开始位置</li>
+<li>start instance location       &#x2F;&#x2F; 实例开始位置<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-built_in">uint</span>[] args = <span class="hljs-keyword">new</span> <span class="hljs-built_in">uint</span>[<span class="hljs-number">5</span>] &#123;<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>&#125;;<br>args[<span class="hljs-number">0</span>] = (<span class="hljs-built_in">uint</span>) instanceMesh.GetIndexCount(subMeshIndex);<br>args[<span class="hljs-number">1</span>] = (<span class="hljs-built_in">uint</span>) instanceCount;<br>args[<span class="hljs-number">2</span>] = (<span class="hljs-built_in">uint</span>) instanceMesh.GetIndexStart(subMeshIndex);<br>args[<span class="hljs-number">3</span>] = (<span class="hljs-built_in">uint</span>) instanceMesh.GetBaseVertex(subMeshIndex);<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>MaterialPropertyBlock             &#x2F;&#x2F; 用于存储buffer数据</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Graphics.DrawMeshInstancedIndirect.html">https://docs.unity3d.com/ScriptReference/Graphics.DrawMeshInstancedIndirect.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Graphics.DrawMeshInstancedProcedural.html">https://docs.unity3d.com/ScriptReference/Graphics.DrawMeshInstancedProcedural.html</a></li>
+<li>DrawMeshInstancedProcedural<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c#">Bounds DrawBounds = <span class="hljs-keyword">new</span> Bounds();<br>DrawBounds.size = Vector3.one * <span class="hljs-number">100000</span>;<br>DrawBounds.center = MainCamera.transform.position;<br><br><span class="hljs-comment">// StructuredBuffer&lt;float4x4&gt; IndirectShaderDataBuffer;</span><br>ComputeBuffer instanceOutputBuffer = <span class="hljs-keyword">new</span> ComputeBuffer(InstanceCount, <span class="hljs-keyword">sizeof</span>(<span class="hljs-built_in">float</span>) * <span class="hljs-number">16</span>);<br><br>MaterialPropertyBlock mpb = <span class="hljs-keyword">new</span> MaterialPropertyBlock();<br>mpb.SetBuffer(<span class="hljs-string">&quot;IndirectShaderDataBuffer&quot;</span>, instanceOutputBuffer);<br><br>Graphics.DrawMeshInstancedProcedural(mesh, <span class="hljs-number">0</span>, material, DrawBounds, InstanceCount, mpb);<br></code></pre></td></tr></table></figure></li>
+<li>Surface Shader设置<ul>
+<li>pragma multi_compile_instancing               &#x2F;&#x2F; Shader开启instancing</li>
+<li>pragma instancing_options procedural:setup    &#x2F;&#x2F; 定义setup函数对输入buffer数据处理，对应unity_InstanceID</li>
+</ul>
+</li>
+</ul>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><ul>
+<li>vert&#x2F;frag版本<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><code class="hljs c++">Shader <span class="hljs-string">&quot;Test/GPUInstance&quot;</span><br>&#123;<br>    Properties<br>    &#123;<br>        _MainTex (<span class="hljs-string">&quot;Albedo (RGB)&quot;</span>, <span class="hljs-number">2</span>D) = <span class="hljs-string">&quot;white&quot;</span> &#123;&#125;<br>    &#125;<br>    SubShader<br>    &#123;<br>        Pass<br>        &#123;<br>            Tags<br>            &#123;<br>                <span class="hljs-string">&quot;LightMode&quot;</span>=<span class="hljs-string">&quot;ForwardBase&quot;</span><br>            &#125;<br><br>            CGPROGRAM<br>            <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> vertex vert</span><br>            <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> fragment frag</span><br>            <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> multi_compile_fwdbase nolightmap nodirlightmap nodynlightmap novertexlight</span><br>            <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> target 4.5</span><br><br>            <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;UnityCG.cginc&quot;</span></span><br>            <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;UnityLightingCommon.cginc&quot;</span></span><br>            <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;AutoLight.cginc&quot;</span></span><br><br>            sampler2D _MainTex;<br><br>            <span class="hljs-meta">#<span class="hljs-keyword">if</span> SHADER_TARGET &gt;= 45</span><br>            StructuredBuffer&lt;float4x4&gt; IndirectShaderDataBuffer;<br>            <span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br>            <span class="hljs-keyword">struct</span> <span class="hljs-title class_">v2f</span><br>            &#123;<br>                float4 pos : SV_POSITION;<br>                float2 uv_MainTex : TEXCOORD0;<br>                float3 ambient : TEXCOORD1;<br>                float3 diffuse : TEXCOORD2;<br>                float3 color : TEXCOORD3;<br>                <span class="hljs-built_in">SHADOW_COORDS</span>(<span class="hljs-number">4</span>)<br>            &#125;;<br><br>            <span class="hljs-function"><span class="hljs-keyword">inline</span> float4x4 <span class="hljs-title">InverseMatrix</span><span class="hljs-params">(float4x4 input)</span></span><br><span class="hljs-function">            </span>&#123;<br>                <span class="hljs-meta">#<span class="hljs-keyword">define</span> minor(a,b,c) determinant(float3x3(input.a, input.b, input.c))</span><br><br>                float4x4 cofactors = <span class="hljs-built_in">float4x4</span>(<br>                    <span class="hljs-built_in">minor</span>(_22_23_24, _32_33_34, _42_43_44),<br>                    -<span class="hljs-built_in">minor</span>(_21_23_24, _31_33_34, _41_43_44),<br>                    <span class="hljs-built_in">minor</span>(_21_22_24, _31_32_34, _41_42_44),<br>                    -<span class="hljs-built_in">minor</span>(_21_22_23, _31_32_33, _41_42_43),<br><br>                    -<span class="hljs-built_in">minor</span>(_12_13_14, _32_33_34, _42_43_44),<br>                    <span class="hljs-built_in">minor</span>(_11_13_14, _31_33_34, _41_43_44),<br>                    -<span class="hljs-built_in">minor</span>(_11_12_14, _31_32_34, _41_42_44),<br>                    <span class="hljs-built_in">minor</span>(_11_12_13, _31_32_33, _41_42_43),<br><br>                    <span class="hljs-built_in">minor</span>(_12_13_14, _22_23_24, _42_43_44),<br>                    -<span class="hljs-built_in">minor</span>(_11_13_14, _21_23_24, _41_43_44),<br>                    <span class="hljs-built_in">minor</span>(_11_12_14, _21_22_24, _41_42_44),<br>                    -<span class="hljs-built_in">minor</span>(_11_12_13, _21_22_23, _41_42_43),<br><br>                    -<span class="hljs-built_in">minor</span>(_12_13_14, _22_23_24, _32_33_34),<br>                    <span class="hljs-built_in">minor</span>(_11_13_14, _21_23_24, _31_33_34),<br>                    -<span class="hljs-built_in">minor</span>(_11_12_14, _21_22_24, _31_32_34),<br>                    <span class="hljs-built_in">minor</span>(_11_12_13, _21_22_23, _31_32_33)<br>                );<br>                <span class="hljs-meta">#<span class="hljs-keyword">undef</span> minor</span><br>                <span class="hljs-keyword">return</span> <span class="hljs-built_in">transpose</span>(cofactors) / <span class="hljs-built_in">determinant</span>(input);<br>            &#125;<br><br>            <span class="hljs-function"><span class="hljs-keyword">inline</span> float3 <span class="hljs-title">ObjectToWorldNormal</span><span class="hljs-params">(float3 norm, float4x4 ObjectToWorld)</span></span><br><span class="hljs-function">            </span>&#123;<br>                <span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> UNITY_ASSUME_UNIFORM_SCALING</span><br>                <span class="hljs-keyword">return</span> <span class="hljs-built_in">normalize</span>(<span class="hljs-built_in">mul</span>((float3x3)ObjectToWorld, norm));<br>                <span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>                <span class="hljs-keyword">return</span> <span class="hljs-built_in">normalize</span>(<span class="hljs-built_in">mul</span>(norm, (float3x3)<span class="hljs-built_in">InverseMatrix</span>(ObjectToWorld)));<br>                <span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>            &#125;<br><br>            <span class="hljs-function">v2f <span class="hljs-title">vert</span><span class="hljs-params">(appdata_full v, uint instanceID : SV_InstanceID)</span></span><br><span class="hljs-function">            </span>&#123;<br>                v2f o;<br>                float4 worldPosition;<br>                float3 worldNormal;<br><br>                <span class="hljs-meta">#<span class="hljs-keyword">if</span> SHADER_TARGET &gt;= 45</span><br>                <span class="hljs-type">const</span> float4x4 bufferMatrix = IndirectShaderDataBuffer[instanceID];<br>                worldPosition = <span class="hljs-built_in">mul</span>(bufferMatrix, v.vertex);<br>                worldNormal = <span class="hljs-built_in">ObjectToWorldNormal</span>(v.normal, bufferMatrix);<br>                <span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>                worldPosition = v.vertex;<br>                worldNormal = v.normal;<br>                <span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br>                float3 ndotl = <span class="hljs-built_in">saturate</span>(<span class="hljs-built_in">dot</span>(worldNormal, _WorldSpaceLightPos0.xyz));<br>                float3 ambient = <span class="hljs-built_in">ShadeSH9</span>(<span class="hljs-built_in">float4</span>(worldNormal, <span class="hljs-number">1.0f</span>));<br>                float3 diffuse = (ndotl * _LightColor0.rgb);<br>                float3 color = v.color;<br><br>                o.pos = <span class="hljs-built_in">mul</span>(UNITY_MATRIX_VP, <span class="hljs-built_in">float4</span>(worldPosition.xyz, <span class="hljs-number">1</span>));<br>                o.uv_MainTex = v.texcoord;<br>                o.ambient = ambient;<br>                o.diffuse = diffuse;<br>                o.color = color;<br>                <span class="hljs-built_in">TRANSFER_SHADOW</span>(o)<br>                <span class="hljs-keyword">return</span> o;<br>            &#125;<br><br>            <span class="hljs-function">fixed4 <span class="hljs-title">frag</span><span class="hljs-params">(v2f i)</span> : SV_Target</span><br><span class="hljs-function">            &#123;</span><br>                fixed shadow = <span class="hljs-built_in">SHADOW_ATTENUATION</span>(i);<br>                fixed4 albedo = <span class="hljs-built_in">tex2D</span>(_MainTex, i.uv_MainTex);<br>                float3 lighting = i.diffuse * shadow + i.ambient;<br>                fixed4 output = <span class="hljs-built_in">fixed4</span>(albedo.rgb * i.color * lighting, albedo.w);<br>                <span class="hljs-keyword">return</span> output;<br>            &#125;<br>            ENDCG<br>        &#125;<br>    &#125;<br>    FallBack <span class="hljs-string">&quot;Diffuse&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>Surface版本<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs c++">Shader <span class="hljs-string">&quot;Test/GPUInstanceSurface&quot;</span><br>&#123;<br>    Properties<br>    &#123;<br>        _Color(<span class="hljs-string">&quot;Base Color&quot;</span>, Color) = (<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)<br>        _Smoothness(<span class="hljs-string">&quot;Smoothness&quot;</span>, <span class="hljs-built_in">Range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)) = <span class="hljs-number">0</span><br>        _Metallic(<span class="hljs-string">&quot;Metallic&quot;</span>, <span class="hljs-built_in">Range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)) = <span class="hljs-number">0</span><br>    &#125;<br>    SubShader<br>    &#123;<br>        Tags<br>        &#123;<br>            <span class="hljs-string">&quot;RenderType&quot;</span>=<span class="hljs-string">&quot;Opaque&quot;</span><br>        &#125;<br><br>        CGPROGRAM<br>        <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> surface surf Standard addshadow nolightmap</span><br>        <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> multi_compile_instancing</span><br>        <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> instancing_options procedural:setup</span><br><br>        half4 _Color;<br>        half _Smoothness;<br>        half _Metallic;<br><br>    <span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> UNITY_PROCEDURAL_INSTANCING_ENABLED</span><br>        StructuredBuffer&lt;float4x4&gt; IndirectShaderDataBuffer;<br>    <span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br>        <span class="hljs-function">float4x4 <span class="hljs-title">inverse</span><span class="hljs-params">(float4x4 input)</span></span><br><span class="hljs-function">        </span>&#123;<br>            <span class="hljs-meta">#<span class="hljs-keyword">define</span> minor(a,b,c) determinant(float3x3(input.a, input.b, input.c))</span><br><br>            float4x4 cofactors = <span class="hljs-built_in">float4x4</span>(<br>                <span class="hljs-built_in">minor</span>(_22_23_24, _32_33_34, _42_43_44),<br>                -<span class="hljs-built_in">minor</span>(_21_23_24, _31_33_34, _41_43_44),<br>                <span class="hljs-built_in">minor</span>(_21_22_24, _31_32_34, _41_42_44),<br>                -<span class="hljs-built_in">minor</span>(_21_22_23, _31_32_33, _41_42_43),<br><br>                -<span class="hljs-built_in">minor</span>(_12_13_14, _32_33_34, _42_43_44),<br>                <span class="hljs-built_in">minor</span>(_11_13_14, _31_33_34, _41_43_44),<br>                -<span class="hljs-built_in">minor</span>(_11_12_14, _31_32_34, _41_42_44),<br>                <span class="hljs-built_in">minor</span>(_11_12_13, _31_32_33, _41_42_43),<br><br>                <span class="hljs-built_in">minor</span>(_12_13_14, _22_23_24, _42_43_44),<br>                -<span class="hljs-built_in">minor</span>(_11_13_14, _21_23_24, _41_43_44),<br>                <span class="hljs-built_in">minor</span>(_11_12_14, _21_22_24, _41_42_44),<br>                -<span class="hljs-built_in">minor</span>(_11_12_13, _21_22_23, _41_42_43),<br><br>                -<span class="hljs-built_in">minor</span>(_12_13_14, _22_23_24, _32_33_34),<br>                <span class="hljs-built_in">minor</span>(_11_13_14, _21_23_24, _31_33_34),<br>                -<span class="hljs-built_in">minor</span>(_11_12_14, _21_22_24, _31_32_34),<br>                <span class="hljs-built_in">minor</span>(_11_12_13, _21_22_23, _31_32_33)<br>            );<br>            <span class="hljs-meta">#<span class="hljs-keyword">undef</span> minor</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-built_in">transpose</span>(cofactors) / <span class="hljs-built_in">determinant</span>(input);<br>        &#125;<br><br>        <span class="hljs-keyword">struct</span> <span class="hljs-title class_">Input</span><br>        &#123;<br>            half param : COLOR;<br>        &#125;;<br><br>        <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span></span><br><span class="hljs-function">        </span>&#123;<br>    <span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> UNITY_PROCEDURAL_INSTANCING_ENABLED</span><br>	        unity_ObjectToWorld = IndirectShaderDataBuffer[unity_InstanceID];<br>	        unity_WorldToObject = <span class="hljs-built_in">inverse</span>(unity_ObjectToWorld);<br>    <span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">surf</span><span class="hljs-params">(Input input, inout SurfaceOutputStandard o)</span></span><br><span class="hljs-function">        </span>&#123;<br>            o.Albedo = _Color.rgb;<br>            o.Metallic = _Metallic;<br>            o.Smoothness = _Smoothness;<br>        &#125;<br>        ENDCG<br>    &#125;<br>    FallBack <span class="hljs-string">&quot;Diffuse&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/js0907/article/details/122418318">ComputeShder和DrawMeshInstancedIndirect相关小注</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/354633512">URP渲染管线 - GPUInstance绘制草地</a><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wlgys8/URPLearn/tree/master/Assets/URPLearn/GrassGPUInstances">https://github.com/wlgys8/URPLearn/tree/master/Assets/URPLearn/GrassGPUInstances</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.lfzxb.top/massive-grass-rendering-based-on-gpu-instance/">基于GPU Instance的草地渲染学习笔记</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/keijiro/Swarm">https://github.com/keijiro/Swarm</a><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/keijiro/Swarm/blob/master/Assets/Swarm/Shader/Tube.shader">https://github.com/keijiro/Swarm/blob/master/Assets/Swarm/Shader/Tube.shader</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/irontree2022/1msRenderVegetation">https://github.com/irontree2022/1msRenderVegetation</a><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MN4y1G7G7">1ms 内渲染大规模植被 Job System</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV14m4y1A7NG">1ms 内渲染大规模植被 Compute Shader</a></li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/wild/categories/Shader/" class="category-chain-item">Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/wild/tags/Unity/">#Unity</a>
+      
+        <a href="/wild/tags/C/">#C#</a>
+      
+        <a href="/wild/tags/Shader/">#Shader</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Unity Shader GPU Instancing</div>
+      <div>https://automask.github.io/wild/2022/06/28/lab/S_Unity_Shader_Instancing/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Kyle Zhou</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年6月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/wild/2022/06/28/lab/S_Unity_Shader_Compute/" title="Unity Compute Shader 入门">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Unity Compute Shader 入门</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/wild/2022/06/26/lab/S_Unity_Mesh_Terrain/" title="Unity Terrain Mesh 程序化地形Mesh生成">
+                        <span class="hidden-mobile">Unity Terrain Mesh 程序化地形Mesh生成</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/wild/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"f9dba89ab6a250cd9cd5","clientSecret":"22c4c67de70580dd90facb24ee875cf337f44541","repo":"wild","owner":"automask","admin":["automask"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'efe6df353e3477ee2e0fe0ae29b479fd'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+
+        <div id="music_div" style="position: fixed; bottom: 0px; left: 0px;">
+
+            <!-- 凡人 -->
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=180 height=80 
+                src="//music.163.com/outchain/player?type=2&id=1465290469&auto=0&height=66">
+            </iframe>
+
+            <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+            <script src="/js/musicshow.js"></script>
+        </div>
+
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/wild/js/events.js" ></script>
+<script  src="/wild/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/wild/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/wild/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/wild/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

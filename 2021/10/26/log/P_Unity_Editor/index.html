@@ -1,0 +1,949 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/wild/Logo/C++_Logo_03.png">
+  <link rel="icon" href="/wild/Logo/C++_Logo_03.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kyle Zhou">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Unity GUI 编辑器拓展">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Editor编辑器拓展">
+<meta property="og:url" content="https://automask.github.io/wild/2021/10/26/log/P_Unity_Editor/index.html">
+<meta property="og:site_name" content="Wild Wind | 风起南天">
+<meta property="og:description" content="Unity GUI 编辑器拓展">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://automask.github.io/wild/Logo/Unity_Logo.png">
+<meta property="article:published_time" content="2021-10-26T02:13:27.000Z">
+<meta property="article:modified_time" content="2022-12-01T13:45:58.851Z">
+<meta property="article:author" content="Kyle Zhou">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Editor">
+<meta property="article:tag" content="Tool">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://automask.github.io/wild/Logo/Unity_Logo.png">
+  
+  
+  
+  <title>Unity Editor编辑器拓展 - Wild Wind | 风起南天</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/wild/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/wild/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/wild/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"automask.github.io","root":"/wild/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/wild/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/wild/js/utils.js" ></script>
+  <script  src="/wild/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/wild/">
+      <strong>Wild Mind | 心如荒野</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/">
+                <i class="iconfont icon-home-fill"></i>
+                博客
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Shader/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unity/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unreal/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Houdini/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Houdini
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Tags
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Shader/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unity/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unreal/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Houdini/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Houdini
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/PCG/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    PCG
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                关于
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/About/">
+                    <i class="iconfont icon-user-fill"></i>
+                    关于
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/Ref">
+                    <i class="iconfont icon-link-fill"></i>
+                    引用
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/2021/10/27/log/T_Hexo/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Hexo
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/wild/WallPaper/WallPaper_02.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Unity Editor编辑器拓展"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-26 10:13" pubdate>
+          2021年10月26日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Unity Editor编辑器拓展</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Editor-GUI"><a href="#Editor-GUI" class="headerlink" title="Editor GUI"></a>Editor GUI</h2><h4 id="InspectorGUI"><a href="#InspectorGUI" class="headerlink" title="InspectorGUI"></a>InspectorGUI</h4><h5 id="Screen-Size"><a href="#Screen-Size" class="headerlink" title="Screen Size"></a>Screen Size</h5><ul>
+<li>Screen.width      &#x2F;&#x2F; 当前InspectorGUI大小，并不是SceneView大小</li>
+<li>Screen.height</li>
+</ul>
+<h5 id="属性变化"><a href="#属性变化" class="headerlink" title="属性变化"></a>属性变化</h5><ul>
+<li>DrawDefaultInspector()    &#x2F;&#x2F; Editor更方便的检测方法</li>
+<li>BeginChangeCheck()    &#x2F;&#x2F; 检测属性UI值变化</li>
+<li>EndChangeCheck()      &#x2F;&#x2F; 若有改变则为true</li>
+<li>OnValidate()          &#x2F;&#x2F; Mono属性变化时调用，用来限定属性<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnInspectorGUI</span>()</span><br>&#123;<br>    <span class="hljs-keyword">if</span> (DrawDefaultInspector())<br>    &#123;<br>        terrainMesh.CreateTerrain();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnInspectorGUI</span>()</span><br>&#123;<br>    EditorGUI.BeginChangeCheck();<br>    <span class="hljs-keyword">base</span>.OnInspectorGUI();<br><br>    <span class="hljs-keyword">if</span> (EditorGUI.EndChangeCheck())<br>    &#123;<br>        terrainMesh.CreateTerrain();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="Attribute"><a href="#Attribute" class="headerlink" title="Attribute"></a>Attribute</h4><ul>
+<li>SerializeField</li>
+<li>HideInInspector</li>
+<li>MenuItem                      &#x2F;&#x2F; 自定义编辑器菜单</li>
+<li>CustomEditor                  &#x2F;&#x2F; 自定义对象属性GUI</li>
+<li>ExecuteInEditMode</li>
+<li>RequireComponent</li>
+<li>ImageEffectAllowedInSceneView</li>
+</ul>
+<h4 id="Shortcut"><a href="#Shortcut" class="headerlink" title="Shortcut"></a>Shortcut</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/EditorTools.EditorTool.html">EditorTool</a></li>
+<li>ToolManager.SetActiveTool(EditorTools.EditorTool tool)<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> UnityEditor.ShortcutManagement;<br>[<span class="hljs-meta">Shortcut(<span class="hljs-string">&quot;Activate Paint Tool&quot;</span>, typeof(SceneView), KeyCode.U)</span>]<br><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Shortcut</span>()</span><br>&#123;<br>    ToolManager.SetActiveTool&lt;EditorTools&gt;();<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="Shader-GUI-Material-Editor"><a href="#Shader-GUI-Material-Editor" class="headerlink" title="Shader GUI || Material Editor"></a>Shader GUI || Material Editor</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qqo_aa/article/details/116999667">Unity 为自己脚本增加材质编辑面板 MaterialEditor</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.xuanyusong.com/archives/4769">Unity3D研究院之材质Shader通用面板</a><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c#">MaterialEditor matEditor = Editor.CreateEditor(material) <span class="hljs-keyword">as</span> MaterialEditor;<br><span class="hljs-keyword">if</span> (matEditor != <span class="hljs-literal">null</span>)<br>    matEditor.PropertiesGUI();<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="CustomEditor-CustomPropertyDrawer"><a href="#CustomEditor-CustomPropertyDrawer" class="headerlink" title="CustomEditor || CustomPropertyDrawer"></a>CustomEditor || CustomPropertyDrawer</h4><ul>
+<li>CustomPropertyDrawer<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1pR4y1f7s5">https://www.bilibili.com/video/BV1pR4y1f7s5</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="UIElements"><a href="#UIElements" class="headerlink" title="UIElements"></a>UIElements</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://www.kodeco.com/6452218-uielements-tutorial-for-unity-getting-started">UIElements Tutorial for Unity: Getting Started</a></li>
+</ul>
+<h4 id="Undo"><a href="#Undo" class="headerlink" title="Undo"></a>Undo</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://support.unity.com/hc/en-us/articles/115002294603-How-do-I-make-a-scene-dirty-when-modifying-a-property-via-script-">make a scene dirty when modifying</a></li>
+<li>Undo.RecordObject(obj, “history info”)</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://www.xuanyusong.com/archives/category/unity/unity3deditor">雨松Mono - Unity3D拓展编辑器</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.xuanyusong.com/archives/4496">Unity3D研究院编辑器之获取粒子准确数量</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.xuanyusong.com/archives/4745">Unity3D研究院之获取FrameDebugger每帧颜色数据</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.xuanyusong.com/archives/3860">获取系统所有EditorStyles</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41841073/article/details/124913941">Unity ScrollView拖不动</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/ltycloud/article/details/79291564">坑爹的GUILayoutUtility.GetRect()和GUILayout.BeginArea()</a></li>
+</ul>
+<h2 id="Tool-工具类"><a href="#Tool-工具类" class="headerlink" title="Tool | 工具类"></a>Tool | 工具类</h2><h3 id="EditorUtility"><a href="#EditorUtility" class="headerlink" title="EditorUtility"></a>EditorUtility</h3><ul>
+<li>RevealInFinder    &#x2F;&#x2F; 打开文件夹</li>
+<li>OpenFilePanel</li>
+<li>OpenFolderPanel</li>
+<li>OpenFilePanelWithFilters</li>
+</ul>
+<h3 id="EditorGUIUtility"><a href="#EditorGUIUtility" class="headerlink" title="EditorGUIUtility"></a>EditorGUIUtility</h3><ul>
+<li>PingObject        &#x2F;&#x2F;浏览、选中资产<ul>
+<li>Selection.activeObject &#x3D; data</li>
+</ul>
+</li>
+</ul>
+<h3 id="AssetDatabase"><a href="#AssetDatabase" class="headerlink" title="AssetDatabase"></a>AssetDatabase</h3><ul>
+<li>LoadAssetAtPath</li>
+<li>AssetPathToGUID</li>
+<li>Contains</li>
+<li>CopyAsset</li>
+<li>CreateAsset</li>
+<li>ExtractAsset</li>
+<li>ImportAsset</li>
+<li>FindAssets</li>
+<li>GetAssetPath</li>
+<li>CreateFolder</li>
+<li>ExportPackage</li>
+</ul>
+<h3 id="PrefabUtility"><a href="#PrefabUtility" class="headerlink" title="PrefabUtility"></a>PrefabUtility</h3><ul>
+<li>CreatePrefab</li>
+<li>CreateEmptyPrefab</li>
+</ul>
+<h3 id="Project-Setting"><a href="#Project-Setting" class="headerlink" title="Project Setting"></a>Project Setting</h3><ul>
+<li>UnityEngine.QualitySettings<ul>
+<li>renderPipeline</li>
+</ul>
+</li>
+<li>UnityEngine.Rendering.GraphicsSettings<ul>
+<li>renderPipelineAsset</li>
+</ul>
+</li>
+<li>UnityEditor.EditorSettings</li>
+<li>UnityEditor.PlayerSettings</li>
+<li>UnityEditor.EditorBuildSettings</li>
+<li>UnityEditor.BuildPipeline             &#x2F;&#x2F;build game</li>
+</ul>
+<h3 id="Unity技巧"><a href="#Unity技巧" class="headerlink" title="Unity技巧"></a>Unity技巧</h3><ul>
+<li>方法属性加Button</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/558732611">Unity小窍门100条！！！(上)</a></li>
+<li>FormerlySerializedAs()<ul>
+<li>重命名显示</li>
+</ul>
+</li>
+<li>RuntimeInitializeOnLoadMethod<ul>
+<li>[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]<ul>
+<li>无需创建空物体就能执行代码</li>
+<li>在运行游戏（Play）就会立即执行该函数，而不需要继承MonoBehavior并挂接在物体身上。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/wild/categories/Unity/" class="category-chain-item">Unity</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/wild/tags/Unity/">#Unity</a>
+      
+        <a href="/wild/tags/C/">#C#</a>
+      
+        <a href="/wild/tags/Editor/">#Editor</a>
+      
+        <a href="/wild/tags/Tool/">#Tool</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Unity Editor编辑器拓展</div>
+      <div>https://automask.github.io/wild/2021/10/26/log/P_Unity_Editor/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Kyle Zhou</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年10月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/wild/2021/10/27/log/T_Vscode/" title="Vscode插件收集">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Vscode插件收集</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/wild/2021/10/26/log/P_Unity_Csharp/" title="Unity C# 学习笔记">
+                        <span class="hidden-mobile">Unity C# 学习笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/wild/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"f9dba89ab6a250cd9cd5","clientSecret":"22c4c67de70580dd90facb24ee875cf337f44541","repo":"wild","owner":"automask","admin":["automask"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '8f27bd2b65ac1f4f5cff30631c0f553d'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+
+        <div id="music_div" style="position: fixed; bottom: 0px; left: 0px;">
+
+            <!-- 凡人 -->
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=180 height=80 
+                src="//music.163.com/outchain/player?type=2&id=1465290469&auto=0&height=66">
+            </iframe>
+
+            <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+            <script src="/js/musicshow.js"></script>
+        </div>
+
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/wild/js/events.js" ></script>
+<script  src="/wild/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/wild/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/wild/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/wild/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

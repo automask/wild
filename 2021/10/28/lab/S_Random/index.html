@@ -1,0 +1,882 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/wild/Logo/C++_Logo_03.png">
+  <link rel="icon" href="/wild/Logo/C++_Logo_03.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kyle Zhou">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="CPU中的随机函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="游戏开发中的Random随机函数">
+<meta property="og:url" content="https://automask.github.io/wild/2021/10/28/lab/S_Random/index.html">
+<meta property="og:site_name" content="Wild Wind | 风起南天">
+<meta property="og:description" content="CPU中的随机函数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://automask.github.io/wild/Logo/Unity_Logo.png">
+<meta property="article:published_time" content="2021-10-28T02:10:27.000Z">
+<meta property="article:modified_time" content="2022-12-01T15:21:54.793Z">
+<meta property="article:author" content="Kyle Zhou">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://automask.github.io/wild/Logo/Unity_Logo.png">
+  
+  
+  
+  <title>游戏开发中的Random随机函数 - Wild Wind | 风起南天</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/wild/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/wild/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/wild/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"automask.github.io","root":"/wild/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/wild/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/wild/js/utils.js" ></script>
+  <script  src="/wild/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/wild/">
+      <strong>Wild Mind | 心如荒野</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/">
+                <i class="iconfont icon-home-fill"></i>
+                博客
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Shader/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unity/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unreal/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Houdini/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Houdini
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Tags
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Shader/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unity/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unreal/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Houdini/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Houdini
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/PCG/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    PCG
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                关于
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/About/">
+                    <i class="iconfont icon-user-fill"></i>
+                    关于
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/Ref">
+                    <i class="iconfont icon-link-fill"></i>
+                    引用
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/2021/10/27/log/T_Hexo/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Hexo
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/wild/WallPaper/WallPaper_02.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="游戏开发中的Random随机函数"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-28 10:10" pubdate>
+          2021年10月28日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">游戏开发中的Random随机函数</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Unity-C-CPU"><a href="#Unity-C-CPU" class="headerlink" title="Unity C# (CPU)"></a>Unity C# (CPU)</h2><h3 id="System-Random"><a href="#System-Random" class="headerlink" title="System.Random"></a>System.Random</h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">var</span> rand = <span class="hljs-keyword">new</span> Random();<br>rand.Next();                    <span class="hljs-comment">// 非负整数</span><br><br>rand.NextSingle();              <span class="hljs-comment">// 0-1 float</span><br>rand.Sample();                  <span class="hljs-comment">// 0-1 float</span><br>rand.Next(Int32 x);             <span class="hljs-comment">// 小于x的非负整数</span><br>rand.Next(Int32, Int32);<br>rand.NextBytes(Byte[]);<br>rand.NextBytes(Span&lt;Byte&gt;);<br>rand.NextDouble();<br>rand.NextInt64();<br>rand.NextInt64(Int64);<br>rand.NextInt64(Int64, Int64);<br></code></pre></td></tr></table></figure>
+
+<h3 id="UnityEngine-Random"><a href="#UnityEngine-Random" class="headerlink" title="UnityEngine.Random"></a>UnityEngine.Random</h3><ul>
+<li>线程不安全</li>
+<li>不能在Job System非主线程中使用</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/ScriptReference/Random.html">https://docs.unity3d.com/ScriptReference/Random.html</a></li>
+</ul>
+<h4 id="Range"><a href="#Range" class="headerlink" title="Range"></a>Range</h4><ul>
+<li>Range(float minInclusive, float maxInclusive)</li>
+<li>Range(int minInclusive, int maxExclusive)</li>
+</ul>
+<h4 id="Seed"><a href="#Seed" class="headerlink" title="Seed"></a>Seed</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-built_in">int</span> seed = <span class="hljs-number">123</span>;<br>Random.InitState(seed);<br><span class="hljs-built_in">float</span> rand = Random.<span class="hljs-keyword">value</span>;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Color"><a href="#Color" class="headerlink" title="Color"></a>Color</h4><ul>
+<li>Random.ColorHSV()</li>
+<li>Random.ColorHSV(float hueMin, float hueMax)</li>
+</ul>
+<h4 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h4><ul>
+<li>Random.insideUnitCircle</li>
+<li>Random.insideUnitSphere</li>
+<li>Random.onUnitSphere</li>
+</ul>
+<h4 id="Quaternion"><a href="#Quaternion" class="headerlink" title="Quaternion"></a>Quaternion</h4><ul>
+<li>Random.rotation</li>
+<li>Random.rotationUniform</li>
+</ul>
+<h3 id="Unity-Mathematics-Random"><a href="#Unity-Mathematics-Random" class="headerlink" title="Unity.Mathematics.Random"></a>Unity.Mathematics.Random</h3><ul>
+<li>线程安全</li>
+<li>支持Job System线程中使用</li>
+<li>第一次使用next，seed一样，结果一样(determinism|伪随机)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.mathematics@0.0/api/Unity.Mathematics.Random.html">Mathematics.Random</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/JohnnyTurbo/2020-LTS-ECS-Tutorials/blob/development/EcsTutorials-Project/Assets/Random/Scripts/ComponentsAndTags/IndividualRandomData.cs">ECS Tutorials</a></li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c#">    NextFloat();<br>    NextFloat(Single);<br>    NextFloat(Single, Single);<br>    NextFloat2();<br>    NextFloat2(float2);<br>    NextFloat2(float2, float2);<br>    NextFloat2Direction();<br>    NextFloat3();<br>    NextFloat3(float3);<br>    NextFloat3(float3, float3);<br>    NextFloat3Direction();<br>...<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Execute</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> index</span>)</span><br>&#123;<br>    Random rand = Random.CreateFromIndex((<span class="hljs-built_in">uint</span>)index);<br>    Result[index] = rand.NextFloat(<span class="hljs-number">0</span>, <span class="hljs-number">100</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="XOR-Shift-Random"><a href="#XOR-Shift-Random" class="headerlink" title="XOR Shift Random"></a>XOR Shift Random</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/aras-p/ToyPathTracer">ToyPathTracer</a><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/aras-p/ToyPathTracer/blob/main/Unity/Assets/Maths.cs">https://github.com/aras-p/ToyPathTracer/blob/main/Unity/Assets/Maths.cs</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.reedbeta.com/blog/quick-and-easy-gpu-random-numbers-in-d3d11/">https://www.reedbeta.com/blog/quick-and-easy-gpu-random-numbers-in-d3d11/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.reedbeta.com/blog/hash-functions-for-gpu-rendering/">https://www.reedbeta.com/blog/hash-functions-for-gpu-rendering/</a></li>
+<li><a target="_blank" rel="noopener" href="https://gist.github.com/septagon/e04204d4cdd59a6c028c70de59bd62b7">https://gist.github.com/septagon/e04204d4cdd59a6c028c70de59bd62b7</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/326270572">https://zhuanlan.zhihu.com/p/326270572</a><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-built_in">uint</span> <span class="hljs-title">XorShift32</span>(<span class="hljs-params"><span class="hljs-keyword">ref</span> <span class="hljs-built_in">uint</span> state</span>)</span><br>&#123;<br>    <span class="hljs-built_in">uint</span> x = state;<br>    x ^= x &lt;&lt; <span class="hljs-number">13</span>;<br>    x ^= x &gt;&gt; <span class="hljs-number">17</span>;<br>    x ^= x &lt;&lt; <span class="hljs-number">15</span>;<br>    state = x;<br>    <span class="hljs-keyword">return</span> x;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">float</span> <span class="hljs-title">RandomFloat01</span>(<span class="hljs-params"><span class="hljs-keyword">ref</span> <span class="hljs-built_in">uint</span> state</span>)</span><br>&#123;<br>    <span class="hljs-keyword">return</span> (XorShift32(<span class="hljs-keyword">ref</span> state) &amp; <span class="hljs-number">0xFFFFFF</span>) / <span class="hljs-number">16777216.0f</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> float3 <span class="hljs-title">RandomInUnitDisk</span>(<span class="hljs-params"><span class="hljs-keyword">ref</span> <span class="hljs-built_in">uint</span> state</span>)</span><br>&#123;<br>    float3 p;<br>    <span class="hljs-keyword">do</span><br>    &#123;<br>        p = <span class="hljs-number">2.0f</span> * <span class="hljs-keyword">new</span> float3(RandomFloat01(<span class="hljs-keyword">ref</span> state), RandomFloat01(<span class="hljs-keyword">ref</span> state), <span class="hljs-number">0</span>) - <span class="hljs-keyword">new</span> float3(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>);<br>    &#125; <span class="hljs-keyword">while</span> (lengthsq(p) &gt;= <span class="hljs-number">1.0</span>);<br>    <span class="hljs-keyword">return</span> p;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> float3 <span class="hljs-title">RandomInUnitSphere</span>(<span class="hljs-params"><span class="hljs-keyword">ref</span> <span class="hljs-built_in">uint</span> state</span>)</span><br>&#123;<br>    float3 p;<br>    <span class="hljs-keyword">do</span><br>    &#123;<br>        p = <span class="hljs-number">2.0f</span> * <span class="hljs-keyword">new</span> float3(RandomFloat01(<span class="hljs-keyword">ref</span> state), RandomFloat01(<span class="hljs-keyword">ref</span> state), RandomFloat01(<span class="hljs-keyword">ref</span> state)) - <span class="hljs-keyword">new</span> float3(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br>    &#125; <span class="hljs-keyword">while</span> (lengthsq(p) &gt;= <span class="hljs-number">1.0</span>);<br>    <span class="hljs-keyword">return</span> p;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> float3 <span class="hljs-title">RandomUnitVector</span>(<span class="hljs-params"><span class="hljs-keyword">ref</span> <span class="hljs-built_in">uint</span> state</span>)</span><br>&#123;<br>    <span class="hljs-built_in">float</span> z = RandomFloat01(<span class="hljs-keyword">ref</span> state) * <span class="hljs-number">2.0f</span> - <span class="hljs-number">1.0f</span>;<br>    <span class="hljs-built_in">float</span> a = RandomFloat01(<span class="hljs-keyword">ref</span> state) * <span class="hljs-number">2.0f</span> * kPI;<br>    <span class="hljs-built_in">float</span> r = sqrt(<span class="hljs-number">1.0f</span> - z * z);<br>    <span class="hljs-built_in">float</span> x, y;<br>    sincos(a, <span class="hljs-keyword">out</span> x, <span class="hljs-keyword">out</span> y);<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> float3(r * x, r* y, z);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Unreal"><a href="#Unreal" class="headerlink" title="Unreal"></a>Unreal</h2><h2 id="Houdini"><a href="#Houdini" class="headerlink" title="Houdini"></a>Houdini</h2>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/wild/categories/Unity/" class="category-chain-item">Unity</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/wild/tags/Unity/">#Unity</a>
+      
+        <a href="/wild/tags/C/">#C#</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>游戏开发中的Random随机函数</div>
+      <div>https://automask.github.io/wild/2021/10/28/lab/S_Random/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Kyle Zhou</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年10月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/wild/2021/10/28/lab/S_Random_Noise/" title="游戏开发中的Noise噪波生成">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">游戏开发中的Noise噪波生成</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/wild/2021/10/27/log/T_Git/" title="Git基础知识">
+                        <span class="hidden-mobile">Git基础知识</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/wild/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"f9dba89ab6a250cd9cd5","clientSecret":"22c4c67de70580dd90facb24ee875cf337f44541","repo":"wild","owner":"automask","admin":["automask"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'c496b2a800ef42f11e4b82df19b88cbc'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+
+        <div id="music_div" style="position: fixed; bottom: 0px; left: 0px;">
+
+            <!-- 凡人 -->
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=180 height=80 
+                src="//music.163.com/outchain/player?type=2&id=1465290469&auto=0&height=66">
+            </iframe>
+
+            <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+            <script src="/js/musicshow.js"></script>
+        </div>
+
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/wild/js/events.js" ></script>
+<script  src="/wild/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/wild/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/wild/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/wild/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1179 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/wild/Logo/C++_Logo_03.png">
+  <link rel="icon" href="/wild/Logo/C++_Logo_03.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kyle Zhou">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="UE C++ 从入门到放弃">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UE5 C++学习笔记">
+<meta property="og:url" content="https://automask.github.io/wild/2022/11/25/log/P_UE_C++_2.0/index.html">
+<meta property="og:site_name" content="Wild Wind | 风起南天">
+<meta property="og:description" content="UE C++ 从入门到放弃">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://automask.github.io/wild/Logo/UE_Logo_02.png">
+<meta property="article:published_time" content="2022-11-25T02:17:30.000Z">
+<meta property="article:modified_time" content="2022-12-01T16:36:04.195Z">
+<meta property="article:author" content="Kyle Zhou">
+<meta property="article:tag" content="Unreal">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="UE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://automask.github.io/wild/Logo/UE_Logo_02.png">
+  
+  
+  
+  <title>UE5 C++学习笔记 - Wild Wind | 风起南天</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/wild/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/wild/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/wild/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"automask.github.io","root":"/wild/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/wild/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/wild/js/utils.js" ></script>
+  <script  src="/wild/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/wild/">
+      <strong>Wild Mind | 心如荒野</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/">
+                <i class="iconfont icon-home-fill"></i>
+                博客
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Shader/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unity/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unreal/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Houdini/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Houdini
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Tags
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Shader/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unity/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unreal/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Houdini/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Houdini
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/PCG/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    PCG
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                关于
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/About/">
+                    <i class="iconfont icon-user-fill"></i>
+                    关于
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/Ref">
+                    <i class="iconfont icon-link-fill"></i>
+                    引用
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/2021/10/27/log/T_Hexo/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Hexo
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/wild/Logo/UE_Logo_02.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="UE5 C++学习笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-25 10:17" pubdate>
+          2022年11月25日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          65 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">UE5 C++学习笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h3><ul>
+<li>Log类型ELogVerbosity<ul>
+<li>Log</li>
+<li>Warning</li>
+<li>Error</li>
+<li>All</li>
+</ul>
+</li>
+<li>UE_LOG<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/liulong1567/article/details/52449000">如何使用UE_LOG</a><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">//单个文件，定义自己的Log类型</span><br><span class="hljs-built_in">DEFINE_LOG_CATEGORY_STATIC</span>(CategoryName,Log,All);<br><br><span class="hljs-comment">//全局文件定义，需要include头文件</span><br><span class="hljs-comment">// xxx.h 头文件声明一个Category为extern，避免多个文件使用此头文件时重复声明</span><br><span class="hljs-built_in">DECLARE_LOG_CATEGORY_EXTERN</span>(CategoryName, Log, All)<br><span class="hljs-comment">// xxx.cpp 源文件定义该Category，全局仅需一份</span><br><span class="hljs-built_in">DEFINE_LOG_CATEGORY</span>(CategoryName)<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>UE_LOG格式化输出<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">UE_LOG</span>(LogTemp, Warning, <span class="hljs-built_in">TEXT</span>(<span class="hljs-string">&quot;init&quot;</span>));<br><span class="hljs-built_in">UE_LOG</span>(LogTemp, Log, <span class="hljs-built_in">TEXT</span>(<span class="hljs-string">&quot;Key : %d Value: %s&quot;</span>), Test.key, Test.Value);<br>GEngine-&gt;<span class="hljs-built_in">AddOnScreenDebugMessage</span>(<span class="hljs-number">0</span>, <span class="hljs-number">2.0f</span>, FColor::Yellow, <span class="hljs-built_in">TEXT</span>(<span class="hljs-string">&quot;init&quot;</span>));<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147648443">简述UnrealInsights</a></li>
+</ul>
+<h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/137799980">UE4 C++基础 - 编码规范</a></li>
+<li>T 表示模板类</li>
+<li>U 表示类继承自 UObject</li>
+<li>A 表示类继承自 AActor</li>
+<li>S 表示类继承自 SWidget</li>
+<li>I 表示抽象接口类</li>
+<li>E 表示枚举</li>
+<li>b 表示布尔值</li>
+<li>F 表示其他不满足上述规则的类</li>
+</ul>
+<h3 id="Get"><a href="#Get" class="headerlink" title="Get"></a>Get</h3><ul>
+<li>GEngine-&gt;getXXX()</li>
+<li>GEditor-&gt;getXXX()</li>
+<li>GEditor-&gt;GetEditorWorldContext().World()</li>
+</ul>
+<h3 id="Spawn"><a href="#Spawn" class="headerlink" title="Spawn"></a>Spawn</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/99327373">【UE4基础】对象创建与资源获取</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/357904199">UE4的资源管理</a></li>
+</ul>
+<h3 id="TArray-TMap"><a href="#TArray-TMap" class="headerlink" title="TArray TMap"></a>TArray TMap</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/426070060">UE4随笔：TArray容器</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/386420743">UE4&#x2F;UE5的TSet和TMap</a></li>
+</ul>
+<h3 id="Reflection"><a href="#Reflection" class="headerlink" title="Reflection"></a>Reflection</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.ch-wind.com/ue4-reflection-note/">UE4属性反射小结</a><ul>
+<li>FindField<UFloatProperty>(Target-&gt;GetClass(), VarName)</li>
+<li>FloatProp-&gt;GetPropertyValue_InContainer(Target)</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40026009/article/details/105121465">UE4 C++ 利用反射获取到类、类的成员</a></li>
+<li>UCLASS</li>
+<li>UPROPERTY<ul>
+<li>EditAnywhere</li>
+<li>VisibleAnywhere</li>
+<li>BlueprintReadWrite</li>
+<li>Category &#x3D; “Test”</li>
+<li>Meta &#x3D; (key&#x3D;value, key&#x3D;value, …)</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/4.27/en-US/ProgrammingAndScripting/GameplayArchitecture/Properties/">API Doc</a></li>
+</ul>
+</li>
+<li>UFUNCTION<ul>
+<li>BlueprintCallable</li>
+<li>CallInEditor</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/4.27/en-US/ProgrammingAndScripting/GameplayArchitecture/Functions/">API Doc</a></li>
+</ul>
+</li>
+<li>UENUM</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/380809095">一文搞懂StaticClass、GetClass和ClassDefaultObject</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/438501014">一文搞懂NativeClass、GeneratedClass、BlueprintClass、ParentClass</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_23030843/article/details/117248969">UE4 从UProperty到FProperty</a><ul>
+<li>在UE4中，通过特殊的宏，将所需要反射的数据进行标记，从而自动的生成供运行时查询的信息<br>  <img src="/wild/2022/11/25/log/P_UE_C++_2.0/image-1656979811800.png" srcset="/wild/img/loading.gif" lazyload></li>
+<li>FindObject(UClass)</li>
+<li>NewObject(UClass)</li>
+<li>从4.25开始，此UProperty已完全更改为FProperty。 前缀“F”说明其不再继承UObject<br>  <img src="/wild/2022/11/25/log/P_UE_C++_2.0/image-1656979928510.png" srcset="/wild/img/loading.gif" lazyload></li>
+</ul>
+</li>
+</ul>
+<h3 id="Module-Plugin"><a href="#Module-Plugin" class="headerlink" title="Module | Plugin"></a>Module | Plugin</h3><ul>
+<li>ModuleManager</li>
+<li><a target="_blank" rel="noopener" href="https://imzlp.com/posts/16643/">UE Build System：Target and Module</a></li>
+<li><a target="_blank" rel="noopener" href="https://imzlp.com/posts/6362/">Build flow of the Unreal Engine4 project</a></li>
+</ul>
+<h3 id="Engine-Module"><a href="#Engine-Module" class="headerlink" title="Engine Module"></a>Engine Module</h3><p><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/5.0/en-US/API/QuickStart/">API</a></p>
+<ul>
+<li>Core<ul>
+<li>基础数据类型：int32 FString float</li>
+<li>数学函数，结构体：FMath FVector</li>
+<li>容器：TArray TList TMap</li>
+</ul>
+</li>
+<li>CoreUObject<ul>
+<li>基础类：UObject UClass UProperty UPackage</li>
+<li>对象内存分配函数：ConstuctObject FindObject Cast</li>
+</ul>
+</li>
+<li>Engine<ul>
+<li>场景对象、组件：AActor APawn UActorComponent</li>
+<li>关卡、世界、玩家：UWorld ULevel UPlayer</li>
+<li>模型、纹理、材质：UTexture UMaterial UStaticMesh</li>
+</ul>
+</li>
+<li>Slate</li>
+</ul>
+<h3 id="UObject"><a href="#UObject" class="headerlink" title="UObject"></a>UObject</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/419769230">[UE4 UObject] 对象概念</a></li>
+<li>UClass::GetDefaultObject() 获取到的为类的 CDO 对象</li>
+<li>CDO 对象的主要作用就是用于为类提供默认值</li>
+<li>UObject::GetOuter() 获取自己的 Outer 对象</li>
+<li>一个对象的 Outer 称为这个对象的父对象，而自己就称为 Outer 对象的子对象</li>
+<li>仅能在 UObject 的 Native 构造函数中，调用自己的 UObject::CreateDefaultSubobject() 为自己创建默认子对象</li>
+<li>UPackage 对象对应于磁盘上的一个 .uasset 资源文件，或全局临时包</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/22813908">《InsideUE4》目录</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24319968">《InsideUE4》UObject（一）开篇</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/22833151">《InsideUE4》GamePlay架构（一）Actor和Component</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/65545884">使UObject能够进行Tick</a></li>
+</ul>
+<h3 id="Editor"><a href="#Editor" class="headerlink" title="Editor"></a>Editor</h3><h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/163587790">UE4 C++基础 - 字符串和本地化</a></p>
+</li>
+<li><p>FString       属于可变字符串</p>
+</li>
+<li><p>FName FText   属于不可变字符串，创建后内容不能改变</p>
+</li>
+<li><p>FName 不区分大小写，主要用于标识资源路径，它的优点就是查找和访问速度快</p>
+</li>
+<li><p>FString转换至FName时会丢失原始字符串的大小写信息</p>
+</li>
+<li><p>FText 主要用于文本本地化<br><img src="/wild/2022/11/25/log/P_UE_C++_2.0/image-1656768471127.png" srcset="/wild/img/loading.gif" lazyload></p>
+</li>
+<li><p>格式化</p>
+<ul>
+<li>FString::Printf(TEXT(“FormatString:\n%s%s%s”), *A, *B, *Plus);</li>
+</ul>
+</li>
+</ul>
+<h3 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/133921916">UE4 C++基础 - 多线程</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/408012121">UE4&#x2F;UE5的TaskGraph</a></li>
+</ul>
+<h3 id="Pointer"><a href="#Pointer" class="headerlink" title="Pointer"></a>Pointer</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/433605801">UE4随笔：UE4智能指针</a></li>
+</ul>
+<h3 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/67055774">UE4 垃圾回收</a></li>
+</ul>
+<h3 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://forums.unrealengine.com/t/exporting-thumbnails-to-pngs/501891">Exporting Thumbnails to PNGs</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/354658960">[UE4 源码观察] AssetThumbnail资源缩略图</a></li>
+</ul>
+<h3 id="Third-Party-C-Library"><a href="#Third-Party-C-Library" class="headerlink" title="Third Party C++ Library"></a>Third Party C++ Library</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/gradientspace/UnrealMeshProcessingTools">UnrealMeshProcessingTools</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.gradientspace.com/tutorials/2020/1/2/libigl-in-unreal-engine">Interactive Mesh Processing with libigl in Unreal Engine 4.24</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1az4y1k73V">UE4链接第三方库的具体使用和演示</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/69432852">UE4链接第三方库（lib和dll）</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/lunweiwangxi3/article/details/83187840">UE4中使用第三方库</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/436727019">修改UE源码之配置第三方库</a><ul>
+<li>Engine\Source\ThirdParty<ul>
+<li>add<ul>
+<li>PublicAdditionalLibraries.Add(XXX + “cublas.lib”)</li>
+<li>PublicDelayLoadDLLs.Add(“cublas64_11.dll”)</li>
+<li>RuntimeDependencies.Add(XXX + “bin&#x2F;“ + “cublas64_11.dll”)</li>
+<li>PublicDefinitions.Add(“NV_CUDA&#x3D;1”)</li>
+</ul>
+</li>
+<li>using<ul>
+<li>AddEngineThirdPartyPrivateStaticDependencies(Target, “CUDA_V11”)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p><img src="/wild/2022/11/25/log/P_UE_C++_2.0/image-20220421162703622.png" srcset="/wild/img/loading.gif" lazyload></p>
+<p>信息是一种能量，只有足够的信息，才能达到质变（Epic大钊）</p>
+<h3 id="Build-Cmd"><a href="#Build-Cmd" class="headerlink" title="Build Cmd"></a>Build Cmd</h3><h4 id="UE项目工程"><a href="#UE项目工程" class="headerlink" title="UE项目工程"></a>UE项目工程</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">set engine=D:\Software\UE_5.0<br>set project=D:\Work\Git\Library\PCG\PCG.uproject<br>set UBT=%engine%\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool<br>set Build=%engine%\Engine\Build\BatchFiles\Build.bat<br><br>cd /d %engine%<br><span class="hljs-meta prompt_"># </span><span class="language-bash">VisualStudio工程</span><br><span class="hljs-meta prompt_">%</span><span class="language-bash">UBT% -projectfiles -project=%project% -game -engine -progress -2019</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">VScode工程</span><br><span class="hljs-meta prompt_">%</span><span class="language-bash">UBT% -projectfiles -vscode -project=%project% -game engine -progress -2022</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">Editor Development编译模式</span><br><span class="hljs-meta prompt_">%</span><span class="language-bash">Build% XXXEditor Win64 Development %project% -waitmutex</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/539289189">避免引擎编译时 “Waiting for ‘git status’ command” 的方法</a></li>
+</ul>
+<h4 id="UE源码工程"><a href="#UE源码工程" class="headerlink" title="UE源码工程"></a>UE源码工程</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell">@echo off<br><br>set UE5=%~dp0<br>set UBTProject=%UE5%Engine\Source\Programs\UnrealBuildTool\UnrealBuildTool.csproj<br>set UBT=%UE5%\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool<br><br>cd /d %UE5%<br>@REM compile UBT<br>dotnet build --configuration Development %UBTProject%<br>@REM generate projectfiles<br><span class="hljs-meta prompt_">%</span><span class="language-bash">UBT% -projectfiles -vscode -engine -dotnet</span><br></code></pre></td></tr></table></figure>
+<h4 id="RunUAT编译"><a href="#RunUAT编译" class="headerlink" title="RunUAT编译"></a>RunUAT编译</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/botman99/ue4-unreal-automation-tool">unreal-automation-tool</a><ul>
+<li>RunUAT.bat -List</li>
+<li>RunUAT.bat BuildGame -Help</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44215538/article/details/123967989">UE4中使用Cmd升级插件版本</a><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">RunUAT.bat BuildPlugin -plugin=&quot;D:\xxx.uplugin&quot; -package=&quot;D:\xxx&quot;<br></code></pre></td></tr></table></figure></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_18345843/article/details/114169813">UE4 Slate独立引用程序</a><ul>
+<li>应用程序依赖特定文件结构和Shader着色器</li>
+<li>建议直接打包运行器，作为已经配置完成的一栏</li>
+<li>RunUAT脚本工具打包</li>
+<li>dotnet工具</li>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/4.27/zh-CN/ProductionPipelines/BuildTools/AutomationTool/HowTo/AddingAutomationProjects/">AutomationTool</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/4.27/zh-CN/ProductionPipelines/BuildTools/AutomationTool/BuildGraph">BuildGraph</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/22813908">《InsideUE4》目录</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MF411z78h">UE_反射编程基础合集</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV19L411L7XA">UE_Slate编程合集</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1BM4y1A7di">在虚幻引擎UE中实现ECharts图表</a></p>
+</li>
+<li></li>
+<li><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=DqqQ_wiWYOw">UE4 Modules</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1SV411a7hB">UE4 Modules</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ZT4y1N7HM">UE4 Python C ++自动化提高生产力</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1NA411L7x4">UE4游戏框架：从int main()到BeginPlay</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ea4y1Y7kK">UE4引擎初始化原理详细讲解</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1yP4y1H7mg">虚幻编译系统详解</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1C7411F7RF">虚幻C++进阶之路 Epic大钊</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ED4y1D7Sf">虚幻引擎GamePlay框架理解与应用</a></p>
+</li>
+<li><p>VT</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1KK411L7Rg">Virtual Texture（虚拟纹理）的理解和应用</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147213120">Unreal Virtual Texture 源码导读</a></li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115658802">Eye Adaptation综述及Unreal实现解析</a></p>
+</li>
+</ul>
+<h3 id="Geometry"><a href="#Geometry" class="headerlink" title="Geometry"></a>Geometry</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/50aa733c3c7f">UE4绘制简单三角形</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/48f81c91f477">UE4 创建Viewport</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/8146224269eb">UE4 自定义Shader 和 RHI</a></li>
+</ul>
+<h3 id="Landscape"><a href="#Landscape" class="headerlink" title="Landscape"></a>Landscape</h3><ul>
+<li><p>FHoudiniLandscapeTranslator::ImportLandscapeData &#x3D;&gt; SetMaskLayer</p>
+</li>
+<li><p>FHoudiniLandscapeTranslator::BackupLandscapeToImageFiles  &#x3D;&gt; ExportHeightLayer</p>
+</li>
+<li><p>FHoudiniLandscapeTranslator::CreateOrUpdateLandscapeLayerData</p>
+<ul>
+<li>ULandscapeLayerInfoObject* LayerInfo &#x3D; GetLandscapeLayerInfoForLayer()</li>
+<li>LayerInfo &#x3D; FindOrCreateLandscapeLayerInfoObject()</li>
+</ul>
+</li>
+<li><p>FLandscapeLayer</p>
+<ul>
+<li>OnGetImportLayerCreateMenu    &#x2F;&#x2F;GUI Create<ul>
+<li>OnImportLayerCreateClicked</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Process</p>
+<ul>
+<li>ULandscapeLayerInfoObject &#x3D;&gt; create layerInfo package</li>
+<li>Switch Material<ul>
+<li>Import Layer from texture</li>
+<li>Find or Create layerInfo</li>
+<li>set layerInfo<ul>
+<li>FHoudiniLandscapeTranslator::OutputLandscape_GenerateTile</li>
+<li>TArray<FLandscapeImportLayerInfo> LayerInfos;</li>
+<li>for (const auto&amp; ImportLayerInfo : LayerInfos)<ul>
+<li>LandscapeActor-&gt;EditorLayerSettings.Add(FLandscapeEditorLayerSettings(ImportLayerInfo.LayerInfo))</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>create layerInfo<ul>
+<li>FHoudiniLandscapeTranslator::CreateOrUpdateLandscapeLayerData</li>
+<li>FHoudiniLandscapeTranslator::FindOrCreateLandscapeLayerInfoObject</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>ALandscapeProxy</p>
+<ul>
+<li>ULandscapeInfo *LandscapeInfo &#x3D; Landscape-&gt;GetLandscapeInfo();</li>
+</ul>
+</li>
+<li><p>ALandscape : public ALandscapeProxy</p>
+<ul>
+<li>Landscape &#x3D; World-&gt;SpawnActor<ALandscape>()</li>
+<li>Landscape-&gt;Import()</li>
+<li>ULandscapeInfo *LandscapeInfo &#x3D; Landscape-&gt;GetLandscapeInfo();</li>
+<li>LandscapeInfo-&gt;UpdateLayerInfoMap(Landscape);</li>
+<li>Landscape-&gt;RegisterAllComponents();</li>
+</ul>
+</li>
+<li><p>Engine\Source\Editor\LandscapeEditor\Private\LandscapeEditorDetailCustomization_ImportLayers.cpp</p>
+</li>
+<li><p>Engine\Source\Editor\LandscapeEditor\Private\LandscapeEditorDetailCustomization_ImportExport.cpp</p>
+</li>
+<li><p>Engine\Source\Editor\LandscapeEditor\Private\LandscapeEditorDetailCustomization_TargetLayers.cpp</p>
+<ul>
+<li>OnTargetLayerDeleteClicked</li>
+</ul>
+</li>
+<li><p>The import size (505×505) does not match the current Landscape extent (0×0), if you continue it will be padded&#x2F;clipped to fit</p>
+</li>
+<li><p>Engine\Source\Editor\LandscapeEditor\Private\LandscapeEdMode.cpp</p>
+<ul>
+<li>FEdModeLandscape::ChangeComponentSetting<ul>
+<li>TMap&lt;FGuid, TArray<uint16>&gt; HeightDataPerLayers;</li>
+<li>TMap&lt;FGuid, TArray<FLandscapeImportLayerInfo>&gt; ImportMaterialLayerInfosPerLayers;</li>
+<li>auto ExtractHeightmapWeightmapContent &#x3D; [&amp;](TArray<uint16>&amp; OutHeightData, TArray<FLandscapeImportLayerInfo>&amp; OutImportMaterialLayerInfos)</li>
+<li>if (HasLandscapeLayersContent())  &#x2F;&#x2F; edit layers<ul>
+<li>ExtractHeightmapWeightmapContent(HeightData, ImportMaterialLayerInfos);</li>
+<li>ImportMaterialLayerInfosPerLayers.Add(FGuid(), MoveTemp(ImportMaterialLayerInfos));   &#x2F;&#x2F; add data</li>
+<li>NewLandscape-&gt;Import(FGuid::NewGuid(), NewMinX, NewMinY, NewMaxX, NewMaxY, NumSubsections, SubsectionSizeQuads, HeightDataPerLayers, *OldLandscape-&gt;ReimportHeightmapFilePath, ImportMaterialLayerInfosPerLayers, ELandscapeImportAlphamapType::Additive, LandscapeLayers);</li>
+<li>Import    &#x2F;&#x2F; create new landscape components<ul>
+<li>Import(const FGuid&amp; InGuid, int32 InMinX, int32 InMinY, int32 InMaxX, int32 InMaxY, int32 InNumSubsections, int32 InSubsectionSizeQuads, const TMap&lt;FGuid, TArray<uint16>&gt;&amp; InImportHeightData, const TCHAR* const InHeightmapFileName, const TMap&lt;FGuid, TArray<FLandscapeImportLayerInfo>&gt;&amp; InImportMaterialLayerInfos, ELandscapeImportAlphamapType InImportMaterialLayerType, const TArray<struct FLandscapeLayer>* InImportLayers &#x3D; nullptr);</li>
+<li>const TMap&lt;FGuid, TArray<FLandscapeImportLayerInfo>&gt;&amp; InImportMaterialLayerInfos</li>
+<li>ALandscapeProxy::Import<ul>
+<li>Source\Runtime\Landscape\Private\LandscapeEdit.cpp</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Import    &#x2F;&#x2F; Houdini Engine Import Method<ul>
+<li>FHoudiniLandscapeTranslator::UpdateLandscapeMaterialLayers(ALandscape* InLandscape,const TArray<FLandscapeImportLayerInfo>&amp; LayerInfos)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Foliage-Landscape"><a href="#Foliage-Landscape" class="headerlink" title="Foliage || Landscape"></a>Foliage || Landscape</h3><ul>
+<li>FoliageType<ul>
+<li>LandscapeLayers</li>
+</ul>
+</li>
+<li>Source\Editor\FoliageEdit\Private\FoliageEdMode.cpp<ul>
+<li>GetMaxHitWeight()<ul>
+<li>ULandscapeComponent* HitLandscape</li>
+<li>float HitWeight &#x3D; HitLandscape-&gt;GetLayerWeightAtLocation(Location,LayerName,LayerCache)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/wild/categories/Unreal/" class="category-chain-item">Unreal</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/wild/tags/Unreal/">#Unreal</a>
+      
+        <a href="/wild/tags/C/">#C++</a>
+      
+        <a href="/wild/tags/UE/">#UE</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>UE5 C++学习笔记</div>
+      <div>https://automask.github.io/wild/2022/11/25/log/P_UE_C++_2.0/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Kyle Zhou</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/wild/2022/11/22/lab/S_Unreal_Slate/" title="UE5 Slate C++ 笔记">
+                        <span class="hidden-mobile">UE5 Slate C++ 笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/wild/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"f9dba89ab6a250cd9cd5","clientSecret":"22c4c67de70580dd90facb24ee875cf337f44541","repo":"wild","owner":"automask","admin":["automask"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '9bedcbc7a0e3304273fa1743e17605a5'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+
+        <div id="music_div" style="position: fixed; bottom: 0px; left: 0px;">
+
+            <!-- 凡人 -->
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=180 height=80 
+                src="//music.163.com/outchain/player?type=2&id=1465290469&auto=0&height=66">
+            </iframe>
+
+            <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+            <script src="/js/musicshow.js"></script>
+        </div>
+
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/wild/js/events.js" ></script>
+<script  src="/wild/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/wild/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/wild/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/wild/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

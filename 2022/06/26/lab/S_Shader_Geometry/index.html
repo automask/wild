@@ -1,0 +1,858 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/wild/Logo/C++_Logo_03.png">
+  <link rel="icon" href="/wild/Logo/C++_Logo_03.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kyle Zhou">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Geometry Shader小案例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Shader - Geometry Shader入门">
+<meta property="og:url" content="https://automask.github.io/wild/2022/06/26/lab/S_Shader_Geometry/index.html">
+<meta property="og:site_name" content="Wild Wind | 风起南天">
+<meta property="og:description" content="Geometry Shader小案例">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://automask.github.io/wild/Logo/Unity_Logo.png">
+<meta property="article:published_time" content="2022-06-26T02:12:27.000Z">
+<meta property="article:modified_time" content="2022-12-01T13:45:58.834Z">
+<meta property="article:author" content="Kyle Zhou">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Shader">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://automask.github.io/wild/Logo/Unity_Logo.png">
+  
+  
+  
+  <title>Unity Shader - Geometry Shader入门 - Wild Wind | 风起南天</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/wild/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/wild/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/wild/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"automask.github.io","root":"/wild/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/wild/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/wild/js/utils.js" ></script>
+  <script  src="/wild/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/wild/">
+      <strong>Wild Mind | 心如荒野</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/">
+                <i class="iconfont icon-home-fill"></i>
+                博客
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Shader/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unity/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unreal/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Houdini/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Houdini
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Tags
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Shader/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unity/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unreal/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Houdini/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Houdini
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/PCG/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    PCG
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                关于
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/About/">
+                    <i class="iconfont icon-user-fill"></i>
+                    关于
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/Ref">
+                    <i class="iconfont icon-link-fill"></i>
+                    引用
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/2021/10/27/log/T_Hexo/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Hexo
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/wild/WallPaper/WallPaper_02.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Unity Shader - Geometry Shader入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-06-26 10:12" pubdate>
+          2022年6月26日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          40 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Unity Shader - Geometry Shader入门</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="Geometry-Shader"><a href="#Geometry-Shader" class="headerlink" title="Geometry Shader"></a>Geometry Shader</h3><h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4><ol>
+<li>vertex阶段输出顶点数据 &#x3D;&gt; geometry阶段</li>
+<li>geometry阶段输入顶点数据</li>
+<li>生成一系列顶点数据</li>
+<li>按顺序输出 &#x3D;&gt; fragment阶段</li>
+</ol>
+<h4 id="用处"><a href="#用处" class="headerlink" title="用处"></a>用处</h4><ul>
+<li>可以用来制作粒子系统</li>
+<li>利用点云生成Instance，集群渲染</li>
+<li>Mesh置换</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++">[<span class="hljs-built_in">maxvertexcount</span>(<span class="hljs-number">30</span>)]<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">geom</span><span class="hljs-params">(point v2g points[<span class="hljs-number">1</span>], inout TriangleStream&lt;g2f&gt; triStream)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> vertexCount = <span class="hljs-number">12</span>;<br>    <span class="hljs-type">const</span> float4 root = points[<span class="hljs-number">0</span>].pos;<br>    g2f v[vertexCount] = &#123;...&#125;;<br><br>    <span class="hljs-function">UNITY_UNROLL</span><br><span class="hljs-function">    <span class="hljs-title">for</span> <span class="hljs-params">(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; vertexCount; i++)</span></span><br><span class="hljs-function">    </span>&#123;<br>        float4 pos = root + <span class="hljs-built_in">float4</span>(x, y, z, <span class="hljs-number">1</span>);<br><br>        <span class="hljs-comment">// 在此阶段进行坐标变换</span><br>        v[i].pos = <span class="hljs-built_in">UnityObjectToClipPos</span>(pos);<br>    &#125;<br><br>    <span class="hljs-function">UNITY_UNROLL</span><br><span class="hljs-function">    <span class="hljs-title">for</span> <span class="hljs-params">(<span class="hljs-type">int</span> p = <span class="hljs-number">0</span>; p &lt; (vertexCount - <span class="hljs-number">2</span>); p++)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">// 定义顶点顺序</span><br>        triStream.<span class="hljs-built_in">Append</span>(v[p]);<br>        triStream.<span class="hljs-built_in">Append</span>(v[p + <span class="hljs-number">2</span>]);<br>        triStream.<span class="hljs-built_in">Append</span>(v[p + <span class="hljs-number">1</span>]);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><h5 id="GeometryShader-shader"><a href="#GeometryShader-shader" class="headerlink" title="GeometryShader.shader"></a>GeometryShader.shader</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br></pre></td><td class="code"><pre><code class="hljs c++">Shader <span class="hljs-string">&quot;Grass/Grass_GeometryShader&quot;</span><br>&#123;<br>    Properties<br>    &#123;<br>        _Height(<span class="hljs-string">&quot;Grass Height&quot;</span>, <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>)) = <span class="hljs-number">3</span><br>        _Width(<span class="hljs-string">&quot;Grass Width&quot;</span>, <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>)) = <span class="hljs-number">0.1</span><br>        _Color(<span class="hljs-string">&quot;Color&quot;</span>,Color) = (<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>)<br>        _NormalSmooth(<span class="hljs-string">&quot;Normal Smooth&quot;</span>, <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)) = <span class="hljs-number">0.5</span><br>    &#125;<br>    SubShader<br>    &#123;<br>        Cull off<br>        Tags<br>        &#123;<br>            <span class="hljs-string">&quot;Queue&quot;</span> = <span class="hljs-string">&quot;AlphaTest&quot;</span> <span class="hljs-string">&quot;RenderType&quot;</span> = <span class="hljs-string">&quot;TransparentCutout&quot;</span> <span class="hljs-string">&quot;IgnoreProjector&quot;</span> = <span class="hljs-string">&quot;True&quot;</span><br>        &#125;<br><br>        Pass<br>        &#123;<br>            Cull OFF<br>            Tags<br>            &#123;<br>                <span class="hljs-string">&quot;LightMode&quot;</span> = <span class="hljs-string">&quot;ForwardBase&quot;</span><br>            &#125;<br>            AlphaToMask On<br><br><br>            CGPROGRAM<br>            <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;UnityCG.cginc&quot;</span></span><br>            <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> vertex vert</span><br>            <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> fragment frag</span><br>            <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> geometry geom</span><br>            <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;UnityLightingCommon.cginc&quot;</span></span><br><br>            <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> target 4.0</span><br><br>            <span class="hljs-keyword">struct</span> v2g<br>            &#123;<br>                float4 pos : SV_POSITION;<br>                half3 norm : NORMAL;<br>                half2 uv : TEXCOORD0;<br>            &#125;;<br><br>            <span class="hljs-keyword">struct</span> <span class="hljs-title class_">g2f</span><br>            &#123;<br>                float4 pos : SV_POSITION;<br>                half3 norm : NORMAL;<br>                half2 uv : TEXCOORD0;<br>            &#125;;<br><br>            <span class="hljs-function">v2g <span class="hljs-title">vert</span><span class="hljs-params">(appdata_full v)</span></span><br><span class="hljs-function">            </span>&#123;<br>                v2g o;<br>                o.pos = v.vertex;<br>                o.norm = v.normal;<br>                o.uv = v.texcoord;<br>                <span class="hljs-keyword">return</span> o;<br>            &#125;<br><br>            <span class="hljs-type">float</span> _Height;<br>            <span class="hljs-type">float</span> _Width;<br>            half4 _Color;<br>            half _NormalSmooth;<br><br>            <span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">rand</span><span class="hljs-params">(float2 uv)</span></span><br><span class="hljs-function">            </span>&#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-built_in">frac</span>(<span class="hljs-built_in">sin</span>(<span class="hljs-built_in">dot</span>(uv, <span class="hljs-built_in">float2</span>(<span class="hljs-number">12.9898</span>, <span class="hljs-number">78.233</span>))) * <span class="hljs-number">43758.5453</span>);<br>            &#125;<br><br>            <span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">remap</span><span class="hljs-params">(<span class="hljs-type">float</span> x, <span class="hljs-type">float</span> oldMin, <span class="hljs-type">float</span> oldMax, <span class="hljs-type">float</span> newMin, <span class="hljs-type">float</span> newMax)</span></span><br><span class="hljs-function">            </span>&#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-built_in">lerp</span>(newMin, newMax, x / (oldMax - oldMin));<br>            &#125;<br><br>            <span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">remap01</span><span class="hljs-params">(<span class="hljs-type">float</span> x, <span class="hljs-type">float</span> min, <span class="hljs-type">float</span> max)</span></span><br><span class="hljs-function">            </span>&#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-built_in">lerp</span>(min, max, x);<br>            &#125;<br>            [<span class="hljs-built_in">maxvertexcount</span>(<span class="hljs-number">30</span>)]<br>            <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">geom</span><span class="hljs-params">(point v2g points[<span class="hljs-number">1</span>], inout TriangleStream&lt;g2f&gt; triStream)</span></span><br><span class="hljs-function">            </span>&#123;<br>                <span class="hljs-type">const</span> float4 root = points[<span class="hljs-number">0</span>].pos;<br>                <span class="hljs-type">const</span> <span class="hljs-type">int</span> vertexCount = <span class="hljs-number">12</span>;<br><br><br>                half random = <span class="hljs-built_in">rand</span>(root.xz);<br><br>                <span class="hljs-type">float</span> angle = random * UNITY_PI * <span class="hljs-number">2</span>;<br>                <span class="hljs-type">float</span> faceNormalAngle = angle + UNITY_PI / <span class="hljs-number">2</span>;<br><br>                half2 direction = <span class="hljs-built_in">half2</span>(<span class="hljs-built_in">cos</span>(angle), <span class="hljs-built_in">sin</span>(angle));<br>                half3 faceNormal = <span class="hljs-built_in">half3</span>(<span class="hljs-built_in">cos</span>(faceNormalAngle), <span class="hljs-number">0</span>, <span class="hljs-built_in">sin</span>(faceNormalAngle));<br>                faceNormal = <span class="hljs-built_in">normalize</span>(<span class="hljs-built_in">lerp</span>(faceNormal, <span class="hljs-built_in">half3</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), _NormalSmooth));<br><br>                g2f v[vertexCount];<br>                <span class="hljs-function">UNITY_UNROLL</span><br><span class="hljs-function">                <span class="hljs-title">for</span> <span class="hljs-params">(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; vertexCount; i++)</span></span><br><span class="hljs-function">                </span>&#123;<br>                    <span class="hljs-type">const</span> uint h = (uint)i / <span class="hljs-number">2</span>;<br><br>                    <span class="hljs-type">const</span> <span class="hljs-type">float</span> length = (<span class="hljs-number">1</span> - h / ((vertexCount - <span class="hljs-number">2</span>) / <span class="hljs-number">2.0</span>)) * _Width / <span class="hljs-number">2</span>;<br>                    half2 dir = (<span class="hljs-built_in">fmod</span>(i, <span class="hljs-number">2</span>) == <span class="hljs-number">0</span>) ? direction : -direction;<br>                    dir *= length;<br><br>                    <span class="hljs-type">const</span> float3 pos = root + <span class="hljs-built_in">float3</span>(dir.x, h * _Height, dir.y) * <span class="hljs-built_in">remap01</span>(random, <span class="hljs-number">0.3</span>, <span class="hljs-number">1.2</span>);<br><br>                    g2f gPoint;<br>                    gPoint.pos = <span class="hljs-built_in">UnityObjectToClipPos</span>(pos);<br>                    gPoint.norm = faceNormal;<br>                    gPoint.uv = <span class="hljs-built_in">half2</span>(i, <span class="hljs-number">0</span>);<br>                    v[i] = gPoint;<br>                &#125;<br><br>                <span class="hljs-function">UNITY_UNROLL</span><br><span class="hljs-function">                <span class="hljs-title">for</span> <span class="hljs-params">(<span class="hljs-type">int</span> p = <span class="hljs-number">0</span>; p &lt; (vertexCount - <span class="hljs-number">2</span>); p++)</span></span><br><span class="hljs-function">                </span>&#123;<br>                    triStream.<span class="hljs-built_in">Append</span>(v[p]);<br>                    triStream.<span class="hljs-built_in">Append</span>(v[p + <span class="hljs-number">2</span>]);<br>                    triStream.<span class="hljs-built_in">Append</span>(v[p + <span class="hljs-number">1</span>]);<br>                &#125;<br>            &#125;<br><br>            <span class="hljs-function">half4 <span class="hljs-title">frag</span><span class="hljs-params">(g2f IN,fixed facing : VFACE)</span> : COLOR</span><br><span class="hljs-function">            &#123;</span><br>                half3 worldNormal = <span class="hljs-built_in">UnityObjectToWorldNormal</span>(IN.norm);<br>                <span class="hljs-comment">//ads</span><br>                fixed3 light;<br>                <span class="hljs-comment">//ambient</span><br>                fixed3 ambient = <span class="hljs-built_in">ShadeSH9</span>(<span class="hljs-built_in">half4</span>(worldNormal, <span class="hljs-number">1</span>));<br>                <span class="hljs-comment">//diffuse</span><br>                fixed3 diffuseLight = <span class="hljs-built_in">saturate</span>(<span class="hljs-built_in">dot</span>(worldNormal, <span class="hljs-built_in">UnityWorldSpaceLightDir</span>(IN.pos))) * _LightColor0;<br>                <span class="hljs-comment">//specular Blinn-Phong </span><br>                fixed3 halfVector = <span class="hljs-built_in">normalize</span>(<span class="hljs-built_in">UnityWorldSpaceLightDir</span>(IN.pos) + <span class="hljs-built_in">WorldSpaceViewDir</span>(IN.pos));<br>                fixed3 specularLight = <span class="hljs-built_in">pow</span>(<span class="hljs-built_in">saturate</span>(<span class="hljs-built_in">dot</span>(worldNormal, halfVector)), <span class="hljs-number">15</span>) * _LightColor0;<br><br>                light = ambient + diffuseLight + specularLight;<br>                <span class="hljs-keyword">return</span> <span class="hljs-built_in">half4</span>(light, <span class="hljs-number">1</span>) * _Color;<br>                <span class="hljs-comment">// return facing &gt; 0 ? 1 : 0;</span><br>                <span class="hljs-comment">// return half4(IN.norm / 2 + 0.5, 1);</span><br>            &#125;<br>            ENDCG<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="PointRender-cs"><a href="#PointRender-cs" class="headerlink" title="PointRender.cs"></a>PointRender.cs</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs c#">[<span class="hljs-meta">ExecuteInEditMode</span>]<br>[<span class="hljs-meta">RequireComponent(typeof(MeshFilter))</span>]<br>[<span class="hljs-meta">RequireComponent(typeof(MeshRenderer))</span>]<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PointRender</span> : <span class="hljs-title">MonoBehaviour</span><br>&#123;<br>    <span class="hljs-keyword">public</span> Material geoMaterial;<br>    <span class="hljs-keyword">private</span> Mesh m_pointMesh;<br>    [<span class="hljs-meta">Range(0, 5)</span>] <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> radius = <span class="hljs-number">1</span>;<br><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span><br>    &#123;<br>        m_pointMesh = CreatePointMesh();<br><br>        GetComponent&lt;MeshFilter&gt;().mesh = m_pointMesh;<br>        GetComponent&lt;MeshRenderer&gt;().sharedMaterial = geoMaterial;<br>    &#125;<br><br>    <span class="hljs-function">Mesh <span class="hljs-title">CreatePointMesh</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> num = <span class="hljs-number">100</span></span>)</span><br>    &#123;<br>        m_pointMesh = <span class="hljs-keyword">new</span> Mesh();<br><br>        <span class="hljs-keyword">var</span> verts = <span class="hljs-keyword">new</span> List&lt;Vector3&gt;(num);<br>        <span class="hljs-keyword">var</span> indices = <span class="hljs-keyword">new</span> <span class="hljs-built_in">int</span>[num];<br><br>        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; num; i++)<br>        &#123;<br>            <span class="hljs-keyword">var</span> pos = Random.insideUnitCircle;<br>            verts.Add(<span class="hljs-keyword">new</span> Vector3(pos.x * radius, <span class="hljs-number">0</span>, pos.y * radius));<br>            indices[i] = i;<br>        &#125;<br><br>        m_pointMesh.vertices = verts.ToArray();<br>        m_pointMesh.SetIndices(indices, MeshTopology.Points, <span class="hljs-number">0</span>);<br><br>        <span class="hljs-keyword">return</span> m_pointMesh;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/29632347">利用GPU实现无尽草地的实时渲染</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/chenjd/Realistic-Real-Time-Grass-Rendering-With-Unity">Realistic-Real-Time-Grass-Rendering-With-Unity</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/wild/categories/Shader/" class="category-chain-item">Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/wild/tags/Unity/">#Unity</a>
+      
+        <a href="/wild/tags/C/">#C#</a>
+      
+        <a href="/wild/tags/Shader/">#Shader</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Unity Shader - Geometry Shader入门</div>
+      <div>https://automask.github.io/wild/2022/06/26/lab/S_Shader_Geometry/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Kyle Zhou</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年6月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/wild/2022/06/26/lab/S_Unity_Mesh_Terrain/" title="Unity Terrain Mesh 程序化地形Mesh生成">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Unity Terrain Mesh 程序化地形Mesh生成</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/wild/2022/06/26/lab/S_Unity_Height_Normal/" title="Height Map to Normal Map">
+                        <span class="hidden-mobile">Height Map to Normal Map</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/wild/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"f9dba89ab6a250cd9cd5","clientSecret":"22c4c67de70580dd90facb24ee875cf337f44541","repo":"wild","owner":"automask","admin":["automask"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '7918b325894c6ceae7beb1c62605a9bd'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+
+        <div id="music_div" style="position: fixed; bottom: 0px; left: 0px;">
+
+            <!-- 凡人 -->
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=180 height=80 
+                src="//music.163.com/outchain/player?type=2&id=1465290469&auto=0&height=66">
+            </iframe>
+
+            <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+            <script src="/js/musicshow.js"></script>
+        </div>
+
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/wild/js/events.js" ></script>
+<script  src="/wild/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/wild/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/wild/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/wild/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

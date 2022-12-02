@@ -1,0 +1,901 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/wild/Logo/C++_Logo_03.png">
+  <link rel="icon" href="/wild/Logo/C++_Logo_03.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kyle Zhou">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="万能的Python，所向披靡">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Houdini Python学习笔记">
+<meta property="og:url" content="https://automask.github.io/wild/2021/11/22/log/P_Houdini_Python/index.html">
+<meta property="og:site_name" content="Wild Wind | 风起南天">
+<meta property="og:description" content="万能的Python，所向披靡">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://automask.github.io/wild/Logo/Houdini_Logo_01.jpg">
+<meta property="article:published_time" content="2021-11-22T02:12:27.000Z">
+<meta property="article:modified_time" content="2022-11-25T13:23:20.605Z">
+<meta property="article:author" content="Kyle Zhou">
+<meta property="article:tag" content="Houdini">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://automask.github.io/wild/Logo/Houdini_Logo_01.jpg">
+  
+  
+  
+  <title>Houdini Python学习笔记 - Wild Wind | 风起南天</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/wild/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/wild/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/wild/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"automask.github.io","root":"/wild/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/wild/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/wild/js/utils.js" ></script>
+  <script  src="/wild/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/wild/">
+      <strong>Wild Mind | 心如荒野</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/">
+                <i class="iconfont icon-home-fill"></i>
+                博客
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Shader/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unity/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unreal/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Houdini/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Houdini
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Tags
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Shader/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unity/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unreal/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Houdini/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Houdini
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/PCG/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    PCG
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                关于
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/About/">
+                    <i class="iconfont icon-user-fill"></i>
+                    关于
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/Ref">
+                    <i class="iconfont icon-link-fill"></i>
+                    引用
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/2021/10/27/log/T_Hexo/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Hexo
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/wild/Logo/Houdini_Logo_01.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Houdini Python学习笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-11-22 10:12" pubdate>
+          2021年11月22日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Houdini Python学习笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="（一）Node节点"><a href="#（一）Node节点" class="headerlink" title="（一）Node节点"></a>（一）Node节点</h3><p>node &#x3D; hou.pwd() 当前节点<br>geo &#x3D; node.geometry()<br>node.parent() 节点的父级节点<br>node.children() 子节点<br>node.inputs() 节点的输入节点元组<br>node.outputs() 节点的输出节点元组<br>SopNode.setHardLocked(True) 冻结Sop数据</p>
+<h3 id="（二）Node-Parm节点通道属性"><a href="#（二）Node-Parm节点通道属性" class="headerlink" title="（二）Node.Parm节点通道属性"></a>（二）Node.Parm节点通道属性</h3><p>p0 &#x3D; node.parm(‘p0’) 不存在时为None<br>p1 &#x3D; node.parm(‘p1’).eval() 获取节点属性值<br>node.parm(‘p2’).set(2) 设置节点属性值<br>node.parms() 获取所有属性<br>node.setParms({“tx”: 1, “sy”: 3})基于dict字典的赋值方法</p>
+<h4 id="Button按钮"><a href="#Button按钮" class="headerlink" title="Button按钮"></a>Button按钮</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">btn = node.parm(<span class="hljs-string">&#x27;Save&#x27;</span>)<br>btn.pressButton()<br></code></pre></td></tr></table></figure>
+
+<h4 id="ParmTemplate"><a href="#ParmTemplate" class="headerlink" title="ParmTemplate"></a>ParmTemplate</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 构造参数</span><br>test_float = hou.FloatParmTemplate(<span class="hljs-string">&quot;test&quot;</span>,<span class="hljs-string">&quot;test&quot;</span>,<span class="hljs-number">1</span>)<br><span class="hljs-comment"># 代码添加、删除参数</span><br>node.addSpareParmTuple(test_float) <br>node.removeSpareParmTuple(node.parm(<span class="hljs-string">&quot;test&quot;</span>))<br></code></pre></td></tr></table></figure>
+<h4 id="Ramp参数"><a href="#Ramp参数" class="headerlink" title="Ramp参数"></a>Ramp参数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python">ramp = node.evalParmTuple(<span class="hljs-string">&quot;ramp&quot;</span>)[<span class="hljs-number">0</span>]<br>value = ramp.lookup(position)<br><br><span class="hljs-comment"># 添加ramp参数</span><br>ramp_temp = hou.RampParmTemplate(<span class="hljs-string">&quot;test&quot;</span>,<span class="hljs-string">&quot;test&quot;</span>,hou.rampParmType.Color,default_value=<span class="hljs-number">2</span>)<br><span class="hljs-comment"># 返回Parm对象而不是ParmTuple</span><br>ramp_parm = node.addSpareParmTuple(ramp_temp)<br>lin = hou.rampBasis.Linear<br>ramp_data = hou.Ramp((lin, lin), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), ((<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>), (<span class="hljs-number">1.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.2</span>)))<br>ramp_parm.<span class="hljs-built_in">set</span>(ramp_data)<br></code></pre></td></tr></table></figure>
+<h4 id="复制节点参数"><a href="#复制节点参数" class="headerlink" title="复制节点参数"></a>复制节点参数</h4><p>测试复制一个box的参数模板、参数值（还不能复制表达式，参数没有hide、disable）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python">box = node.inputs()[<span class="hljs-number">0</span>]<br>parms = box.parmTuples()<br><span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> parms:<br>    tp = p.parmTemplate()<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.parmTuple(tp.name()):<br>        clone = tp.clone()<br>        node.addSpareParmTuple(clone)<br>    node.parmTuple(tp.name()).<span class="hljs-built_in">set</span>(p.<span class="hljs-built_in">eval</span>())<br></code></pre></td></tr></table></figure>
+<h3 id="（三）几何数据"><a href="#（三）几何数据" class="headerlink" title="（三）几何数据"></a>（三）几何数据</h3><h4 id="Geometry"><a href="#Geometry" class="headerlink" title="Geometry"></a>Geometry</h4><ul>
+<li>geo &#x3D; node.geometry()</li>
+<li>geo.points() 获取Point数据集合</li>
+<li>geo.prims() 获取Prim数据集合</li>
+<li>geo.data() 几何字节码</li>
+<li>bgeo_data &#x3D; geo.data() open(“&#x2F;tmp&#x2F;torus.bgeo”, “wb”).write- (bgeo_data)</li>
+<li>geo.clear() 清除几何数据</li>
+<li>geo.transform(matrix)</li>
+<li>geo.pointGroups() 所有的点组PointGroup</li>
+<li>geo.findPointGroup(groupName) 获取点组</li>
+</ul>
+<h4 id="Point"><a href="#Point" class="headerlink" title="Point"></a>Point</h4><ul>
+<li>number() 点id</li>
+<li>position() 坐标</li>
+<li>vertices() 相关的顶点</li>
+<li>prims() 相关的面</li>
+<li>weight() 权重值</li>
+<li>PointGroup</li>
+<li>name()</li>
+<li>points() 组内的点集</li>
+</ul>
+<h4 id="创建点、线、面"><a href="#创建点、线、面" class="headerlink" title="创建点、线、面"></a>创建点、线、面</h4><ul>
+<li>geo.createPoint()</li>
+<li>geo.createPolygon(is_closed&#x3D;False) 参数is_closed控制是曲线还是多- 边形</li>
+<li>addVertex() 往Prim里面添加已经存在的Point</li>
+</ul>
+<h4 id="创建Point"><a href="#创建Point" class="headerlink" title="创建Point"></a>创建Point</h4><ul>
+<li>start &#x3D; geo.createPoint()</li>
+<li>start.setPosition(hou.Vector3(0,0,0))</li>
+<li>pt &#x3D; geo.createPoint()</li>
+<li>pt.setPosition(hou.Vector3(0,1,0))</li>
+</ul>
+<h4 id="创建Prim，添加Vertex"><a href="#创建Prim，添加Vertex" class="headerlink" title="创建Prim，添加Vertex"></a>创建Prim，添加Vertex</h4><ul>
+<li>line &#x3D; geo.createPolygon(is_closed&#x3D;False)</li>
+<li>line.addVertex(start)</li>
+<li>line.addVertex(pt)</li>
+</ul>
+<h3 id="（四）几何属性"><a href="#（四）几何属性" class="headerlink" title="（四）几何属性"></a>（四）几何属性</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python">node = hou.pwd()<br>geo = node.geometry()<br>​<br>points = geo.points()<br>prims = geo.prims()<br>​<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> points:<br>    <span class="hljs-built_in">print</span> i.attribValue(<span class="hljs-string">&quot;Cd&quot;</span>)<br>    i.setAttribValue(<span class="hljs-string">&quot;pscale&quot;</span>,<span class="hljs-number">0.5</span>)<br>    <br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> prims:<br>    <span class="hljs-built_in">print</span> i.attribValue(<span class="hljs-string">&quot;name&quot;</span>)<br>    i.setAttribValue(<span class="hljs-string">&quot;name&quot;</span>,<span class="hljs-string">&quot;mask&quot;</span>)<br>​<br><span class="hljs-comment">#detail/global属性</span><br>res = geo.attribValue(<span class="hljs-string">&quot;res&quot;</span>)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>一般VEX会自动创建属性类，Python不会自动创建没有的属性类</li>
+<li>自定义的属性需要先addAttrib()，不然会报错的<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">thick_attrib = geo.addAttrib(hou.attribType.Point, <span class="hljs-string">&quot;thick&quot;</span>, <span class="hljs-number">1.0</span>) <br>geo.setAttribValue(thick_attrib, <span class="hljs-number">2.2</span>)<br></code></pre></td></tr></table></figure></li>
+<li>添加数组属性addArrayAttrib()</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">geo.addArrayAttrib(hou.attribType.Global, <span class="hljs-string">&quot;data&quot;</span>, hou.attribData.Float, tuple_size=<span class="hljs-number">3</span>)<br><span class="hljs-comment"># 步长为3，最终结果为[(1.0, 2.0, 3.0), (4.0, 5.0, 6.0)]</span><br>geo.setGlobalAttribValue(<span class="hljs-string">&quot;data&quot;</span>, [<span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>, <span class="hljs-number">5.0</span>, <span class="hljs-number">6.0</span>])<br></code></pre></td></tr></table></figure>
+<h3 id="（五）HDA-Python"><a href="#（五）HDA-Python" class="headerlink" title="（五）HDA Python"></a>（五）HDA Python</h3><h4 id="Python-Module"><a href="#Python-Module" class="headerlink" title="Python Module"></a>Python Module</h4><ul>
+<li>node.hdaModule()或者node.hm()访问<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">hou.pwd().hdaModule().test()<br>kwargs[<span class="hljs-string">&#x27;node&#x27;</span>].hdaModule().test()<br>kwargs[<span class="hljs-string">&#x27;node&#x27;</span>].hm().test()<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="自定义模块"><a href="#自定义模块" class="headerlink" title="自定义模块"></a>自定义模块</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#需要在PythonModule中导入</span><br><span class="hljs-keyword">import</span> toolutils<br>mod = toolutils.createModuleFromSection(<span class="hljs-string">&quot;tt&quot;</span>, kwargs[<span class="hljs-string">&quot;type&quot;</span>], <span class="hljs-string">&quot;terrain&quot;</span>)<br>​<br><span class="hljs-comment">#调用时</span><br>kwargs[<span class="hljs-string">&#x27;node&#x27;</span>].hdaModule().mod.test()<br></code></pre></td></tr></table></figure>
+
+<h4 id="Menu-Script"><a href="#Menu-Script" class="headerlink" title="Menu Script"></a>Menu Script</h4><p>返回值，数量为偶数个字符串的列表，直接的逗号分割即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">return</span> (<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>)<br>[<span class="hljs-number">1</span>,<span class="hljs-string">&quot;ww&quot;</span>,<span class="hljs-number">2</span>,<span class="hljs-string">&quot;www&quot;</span>]<br><span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span><br><span class="hljs-string">&quot;1&quot;</span>,<span class="hljs-string">&quot;2&quot;</span>,<span class="hljs-string">&quot;3&quot;</span>,<span class="hljs-string">&quot;4&quot;</span><br></code></pre></td></tr></table></figure>
+<h3 id="（六）Houdini安装Python-Package"><a href="#（六）Houdini安装Python-Package" class="headerlink" title="（六）Houdini安装Python Package"></a>（六）Houdini安装Python Package</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">打开Houdini-&gt;Windows-&gt;Shell，先下载get-pip.py</span><br>curl https://bootstrap.pypa.io/get-pip.py -o D:/get-pip.py<br><span class="hljs-meta prompt_"># </span><span class="language-bash">安装pip</span><br>hython D:/get-pip.py<br><span class="hljs-meta prompt_"># </span><span class="language-bash">安装pip成功后，与python安装package一样的语法</span><br>hython -m pip install gifmaker<br></code></pre></td></tr></table></figure>
+<ul>
+<li>参考视频：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=cIEN50WuPoc">https://www.youtube.com/watch?v=cIEN50WuPoc</a></li>
+</ul>
+<h3 id="（七）其他"><a href="#（七）其他" class="headerlink" title="（七）其他"></a>（七）其他</h3><h4 id="获取图片分辨率"><a href="#获取图片分辨率" class="headerlink" title="获取图片分辨率"></a>获取图片分辨率</h4><ul>
+<li>hou.imageResolution(path)</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/wild/categories/Houdini/" class="category-chain-item">Houdini</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/wild/tags/Houdini/">#Houdini</a>
+      
+        <a href="/wild/tags/Python/">#Python</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Houdini Python学习笔记</div>
+      <div>https://automask.github.io/wild/2021/11/22/log/P_Houdini_Python/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Kyle Zhou</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年11月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/wild/2021/11/23/log/P_Houdini_Vex_Hscript/" title="Houdini VEX | Hscript学习笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Houdini VEX | Hscript学习笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/wild/2021/10/28/lab/S_Random_Noise/" title="游戏开发中的Noise噪波生成">
+                        <span class="hidden-mobile">游戏开发中的Noise噪波生成</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/wild/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"f9dba89ab6a250cd9cd5","clientSecret":"22c4c67de70580dd90facb24ee875cf337f44541","repo":"wild","owner":"automask","admin":["automask"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: 'acd431f9a3ffc3549daf971a6de7b166'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+
+        <div id="music_div" style="position: fixed; bottom: 0px; left: 0px;">
+
+            <!-- 凡人 -->
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=180 height=80 
+                src="//music.163.com/outchain/player?type=2&id=1465290469&auto=0&height=66">
+            </iframe>
+
+            <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+            <script src="/js/musicshow.js"></script>
+        </div>
+
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/wild/js/events.js" ></script>
+<script  src="/wild/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/wild/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/wild/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/wild/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

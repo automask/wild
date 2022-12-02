@@ -1,0 +1,848 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/wild/Logo/C++_Logo_03.png">
+  <link rel="icon" href="/wild/Logo/C++_Logo_03.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kyle Zhou">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Unity Shader Graph 源码学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Shader Graph 源码学习">
+<meta property="og:url" content="https://automask.github.io/wild/2022/06/26/lab/S_Unity_ShaderGraph/index.html">
+<meta property="og:site_name" content="Wild Wind | 风起南天">
+<meta property="og:description" content="Unity Shader Graph 源码学习">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://automask.github.io/wild/Logo/Unity_Logo.png">
+<meta property="article:published_time" content="2022-06-26T02:01:27.000Z">
+<meta property="article:modified_time" content="2022-12-01T13:45:58.848Z">
+<meta property="article:author" content="Kyle Zhou">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="Shader">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://automask.github.io/wild/Logo/Unity_Logo.png">
+  
+  
+  
+  <title>Unity Shader Graph 源码学习 - Wild Wind | 风起南天</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/wild/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/wild/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/wild/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"automask.github.io","root":"/wild/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/wild/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/wild/js/utils.js" ></script>
+  <script  src="/wild/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/wild/">
+      <strong>Wild Mind | 心如荒野</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/">
+                <i class="iconfont icon-home-fill"></i>
+                博客
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Categories
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Shader/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unity/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Unreal/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/categories/Houdini/">
+                    <i class="iconfont icon-category-fill"></i>
+                    Houdini
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Tags
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/">
+                    
+                    -----------
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Shader/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Shader
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unity/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unity
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Unreal/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Unreal
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/Houdini/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Houdini
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/tags/PCG/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    PCG
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/wild/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                关于
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/About/">
+                    <i class="iconfont icon-user-fill"></i>
+                    关于
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/dev/Ref">
+                    <i class="iconfont icon-link-fill"></i>
+                    引用
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/wild/2021/10/27/log/T_Hexo/">
+                    <i class="iconfont icon-tags-fill"></i>
+                    Hexo
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/wild/WallPaper/WallPaper_02.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Unity Shader Graph 源码学习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-06-26 10:01" pubdate>
+          2022年6月26日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          43 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Unity Shader Graph 源码学习</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="Noise-Random"><a href="#Noise-Random" class="headerlink" title="Noise | Random"></a>Noise | Random</h3><h4 id="RandomRangeNode"><a href="#RandomRangeNode" class="headerlink" title="RandomRangeNode"></a>RandomRangeNode</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">Random</span><span class="hljs-params">(<span class="hljs-type">float</span> seed)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">frac</span>(<span class="hljs-built_in">sin</span>(<span class="hljs-built_in">dot</span>(Seed, <span class="hljs-built_in">float2</span>(<span class="hljs-number">12.9898</span>, <span class="hljs-number">78.233</span>)))*<span class="hljs-number">43758.5453</span>);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">RandomRange</span><span class="hljs-params">(<span class="hljs-type">float</span> seed, <span class="hljs-type">float</span> min, <span class="hljs-type">float</span> max)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">float</span> randomno =  <span class="hljs-built_in">frac</span>(<span class="hljs-built_in">sin</span>(<span class="hljs-built_in">dot</span>(Seed, <span class="hljs-built_in">float2</span>(<span class="hljs-number">12.9898</span>, <span class="hljs-number">78.233</span>)))*<span class="hljs-number">43758.5453</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">lerp</span>(Min, Max, randomno);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Unity-SimpleNoise"><a href="#Unity-SimpleNoise" class="headerlink" title="Unity_SimpleNoise"></a>Unity_SimpleNoise</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">float</span> <span class="hljs-title">Unity_SimpleNoise_RandomValue_float</span> <span class="hljs-params">(float2 uv)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">float</span> angle = <span class="hljs-built_in">dot</span>(uv, <span class="hljs-built_in">float2</span>(<span class="hljs-number">12.9898</span>, <span class="hljs-number">78.233</span>));<br>    <span class="hljs-meta">#<span class="hljs-keyword">if</span> defined(SHADER_API_MOBILE) &amp;&amp; (defined(SHADER_API_GLES) || defined(SHADER_API_GLES3) || defined(SHADER_API_VULKAN))</span><br>        <span class="hljs-comment">// &#x27;sin()&#x27; has bad precision on Mali GPUs for inputs &gt; 10000</span><br>        angle = <span class="hljs-built_in">fmod</span>(angle, TWO_PI); <span class="hljs-comment">// Avoid large inputs to sin()</span><br>    <span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">frac</span>(<span class="hljs-built_in">sin</span>(angle)*<span class="hljs-number">43758.5453</span>);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">float</span> <span class="hljs-title">Unity_SimpleNnoise_Interpolate_float</span> <span class="hljs-params">(<span class="hljs-type">float</span> a, <span class="hljs-type">float</span> b, <span class="hljs-type">float</span> t)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> (<span class="hljs-number">1.0</span>-t)*a + (t*b);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">float</span> <span class="hljs-title">Unity_SimpleNoise_ValueNoise_float</span> <span class="hljs-params">(float2 uv)</span></span><br><span class="hljs-function"></span>&#123;<br>    float2 i = <span class="hljs-built_in">floor</span>(uv);<br>    float2 f = <span class="hljs-built_in">frac</span>(uv);<br>    f = f * f * (<span class="hljs-number">3.0</span> - <span class="hljs-number">2.0</span> * f);<br><br>    uv = <span class="hljs-built_in">abs</span>(<span class="hljs-built_in">frac</span>(uv) - <span class="hljs-number">0.5</span>);<br>    float2 c0 = i + <span class="hljs-built_in">float2</span>(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>);<br>    float2 c1 = i + <span class="hljs-built_in">float2</span>(<span class="hljs-number">1.0</span>, <span class="hljs-number">0.0</span>);<br>    float2 c2 = i + <span class="hljs-built_in">float2</span>(<span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>);<br>    float2 c3 = i + <span class="hljs-built_in">float2</span>(<span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>);<br>    <span class="hljs-type">float</span> r0 = <span class="hljs-built_in">Unity_SimpleNoise_RandomValue_float</span>(c0);<br>    <span class="hljs-type">float</span> r1 = <span class="hljs-built_in">Unity_SimpleNoise_RandomValue_float</span>(c1);<br>    <span class="hljs-type">float</span> r2 = <span class="hljs-built_in">Unity_SimpleNoise_RandomValue_float</span>(c2);<br>    <span class="hljs-type">float</span> r3 = <span class="hljs-built_in">Unity_SimpleNoise_RandomValue_float</span>(c3);<br><br>    <span class="hljs-type">float</span> bottomOfGrid = <span class="hljs-built_in">Unity_SimpleNnoise_Interpolate_float</span>(r0, r1, f.x);<br>    <span class="hljs-type">float</span> topOfGrid = <span class="hljs-built_in">Unity_SimpleNnoise_Interpolate_float</span>(r2, r3, f.x);<br>    <span class="hljs-type">float</span> t = <span class="hljs-built_in">Unity_SimpleNnoise_Interpolate_float</span>(bottomOfGrid, topOfGrid, f.y);<br>    <span class="hljs-keyword">return</span> t;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">Unity_SimpleNoise</span><span class="hljs-params">(float2 UV, <span class="hljs-type">float</span> Scale)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">float</span> t = <span class="hljs-number">0.0</span>;<br><br>    <span class="hljs-type">float</span> freq = <span class="hljs-built_in">pow</span>(<span class="hljs-number">2.0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-number">0</span>));<br>    <span class="hljs-type">float</span> amp = <span class="hljs-built_in">pow</span>(<span class="hljs-number">0.5</span>, <span class="hljs-built_in">float</span>(<span class="hljs-number">3</span><span class="hljs-number">-0</span>));<br>    t += <span class="hljs-built_in">Unity_SimpleNoise_ValueNoise_float</span>(<span class="hljs-built_in">float2</span>(UV.x*Scale/freq, UV.y*Scale/freq))*amp;<br><br>    freq = <span class="hljs-built_in">pow</span>(<span class="hljs-number">2.0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-number">1</span>));<br>    amp = <span class="hljs-built_in">pow</span>(<span class="hljs-number">0.5</span>, <span class="hljs-built_in">float</span>(<span class="hljs-number">3</span><span class="hljs-number">-1</span>));<br>    t += <span class="hljs-built_in">Unity_SimpleNoise_ValueNoise_float</span>(<span class="hljs-built_in">float2</span>(UV.x*Scale/freq, UV.y*Scale/freq))*amp;<br><br>    freq = <span class="hljs-built_in">pow</span>(<span class="hljs-number">2.0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-number">2</span>));<br>    amp = <span class="hljs-built_in">pow</span>(<span class="hljs-number">0.5</span>, <span class="hljs-built_in">float</span>(<span class="hljs-number">3</span><span class="hljs-number">-2</span>));<br>    t += <span class="hljs-built_in">Unity_SimpleNoise_ValueNoise_float</span>(<span class="hljs-built_in">float2</span>(UV.x*Scale/freq, UV.y*Scale/freq))*amp;<br><br>    <span class="hljs-keyword">return</span> t;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="GradientNoiseNode"><a href="#GradientNoiseNode" class="headerlink" title="GradientNoiseNode"></a>GradientNoiseNode</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">float2 <span class="hljs-title">Unity_GradientNoise_Dir_float</span><span class="hljs-params">(float2 p)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// Permutation and hashing used in webgl-nosie goo.gl/pX7HtC</span><br>    p = p % <span class="hljs-number">289</span>;<br>    <span class="hljs-comment">// need full precision, otherwise half overflows when p &gt; 1</span><br>    <span class="hljs-type">float</span> x = <span class="hljs-built_in">float</span>(<span class="hljs-number">34</span> * p.x + <span class="hljs-number">1</span>) * p.x % <span class="hljs-number">289</span> + p.y;<br>    x = (<span class="hljs-number">34</span> * x + <span class="hljs-number">1</span>) * x % <span class="hljs-number">289</span>;<br>    x = <span class="hljs-built_in">frac</span>(x / <span class="hljs-number">41</span>) * <span class="hljs-number">2</span> - <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">normalize</span>(<span class="hljs-built_in">float2</span>(x - <span class="hljs-built_in">floor</span>(x + <span class="hljs-number">0.5</span>), <span class="hljs-built_in">abs</span>(x) - <span class="hljs-number">0.5</span>));<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">Unity_GradientNoise</span><span class="hljs-params">(float2 UV, <span class="hljs-type">float</span> Scale)</span></span><br><span class="hljs-function"></span>&#123;<br>    float2 p = UV * Scale;<br>    float2 ip = <span class="hljs-built_in">floor</span>(p);<br>    float2 fp = <span class="hljs-built_in">frac</span>(p);<br>    <span class="hljs-type">float</span> d00 = <span class="hljs-built_in">dot</span>(<span class="hljs-built_in">Unity_GradientNoise_Dir_float</span>(ip), fp);<br>    <span class="hljs-type">float</span> d01 = <span class="hljs-built_in">dot</span>(<span class="hljs-built_in">Unity_GradientNoise_Dir_float</span>(ip + <span class="hljs-built_in">float2</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)), fp - <span class="hljs-built_in">float2</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>));<br>    <span class="hljs-type">float</span> d10 = <span class="hljs-built_in">dot</span>(<span class="hljs-built_in">Unity_GradientNoise_Dir_float</span>(ip + <span class="hljs-built_in">float2</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)), fp - <span class="hljs-built_in">float2</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>));<br>    <span class="hljs-type">float</span> d11 = <span class="hljs-built_in">dot</span>(<span class="hljs-built_in">Unity_GradientNoise_Dir_float</span>(ip + <span class="hljs-built_in">float2</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>)), fp - <span class="hljs-built_in">float2</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>));<br>    fp = fp * fp * fp * (fp * (fp * <span class="hljs-number">6</span> - <span class="hljs-number">15</span>) + <span class="hljs-number">10</span>);<br>    Out = <span class="hljs-built_in">lerp</span>(<span class="hljs-built_in">lerp</span>(d00, d01, fp.y), <span class="hljs-built_in">lerp</span>(d10, d11, fp.y), fp.x) + <span class="hljs-number">0.5</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="VoronoiNode"><a href="#VoronoiNode" class="headerlink" title="VoronoiNode"></a>VoronoiNode</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">inline</span> float2 <span class="hljs-title">Unity_Voronoi_RandomVector_float</span> <span class="hljs-params">(float2 UV, <span class="hljs-type">float</span> offset)</span></span><br><span class="hljs-function"></span>&#123;<br>    float2x2 m = <span class="hljs-built_in">float2x2</span>(<span class="hljs-number">15.27</span>, <span class="hljs-number">47.63</span>, <span class="hljs-number">99.41</span>, <span class="hljs-number">89.98</span>);<br>    UV = <span class="hljs-built_in">frac</span>(<span class="hljs-built_in">sin</span>(<span class="hljs-built_in">mul</span>(UV, m)));<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">float2</span>(<span class="hljs-built_in">sin</span>(UV.y*+offset)*<span class="hljs-number">0.5</span>+<span class="hljs-number">0.5</span>, <span class="hljs-built_in">cos</span>(UV.x*offset)*<span class="hljs-number">0.5</span>+<span class="hljs-number">0.5</span>);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">Unity_Voronoi</span><span class="hljs-params">(float2 UV, <span class="hljs-type">float</span> AngleOffset, <span class="hljs-type">float</span> CellDensity)</span></span><br><span class="hljs-function"></span>&#123;<br>    float2 g = <span class="hljs-built_in">floor</span>(UV * CellDensity);<br>    float2 f = <span class="hljs-built_in">frac</span>(UV * CellDensity);<br>    <span class="hljs-type">float</span> t = <span class="hljs-number">8.0</span>;<br>    float3 res = <span class="hljs-built_in">float3</span>(<span class="hljs-number">8.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>);<br><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> y=<span class="hljs-number">-1</span>; y&lt;=<span class="hljs-number">1</span>; y++)<br>    &#123;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> x=<span class="hljs-number">-1</span>; x&lt;=<span class="hljs-number">1</span>; x++)<br>        &#123;<br>            float2 lattice = <span class="hljs-built_in">float2</span>(x,y);<br>            float2 offset = <span class="hljs-built_in">Unity_Voronoi_RandomVector_float</span>(lattice + g, AngleOffset);<br>            <span class="hljs-type">float</span> d = <span class="hljs-built_in">distance</span>(lattice + offset, f);<br><br>            <span class="hljs-keyword">if</span>(d &lt; res.x)<br>            &#123;<br>                res = <span class="hljs-built_in">float3</span>(d, offset.x, offset.y);<br>                Out = res.x;<br>                Cells = res.y;<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="NoiseSineWaveNode"><a href="#NoiseSineWaveNode" class="headerlink" title="NoiseSineWaveNode"></a>NoiseSineWaveNode</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">NoiseSineWave</span><span class="hljs-params">(<span class="hljs-type">float</span> In, float2 MinMax)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">float</span> sinIn = <span class="hljs-built_in">sin</span>(In);<br>    <span class="hljs-type">float</span> sinInOffset = <span class="hljs-built_in">sin</span>(In + <span class="hljs-number">1.0</span>);<br>    <span class="hljs-type">float</span> randomno =  <span class="hljs-built_in">frac</span>(<span class="hljs-built_in">sin</span>((sinIn - sinInOffset) * (<span class="hljs-number">12.9898</span> + <span class="hljs-number">78.233</span>))*<span class="hljs-number">43758.5453</span>);<br>    <span class="hljs-type">float</span> noise = <span class="hljs-built_in">lerp</span>(MinMax.x, MinMax.y, randomno);<br>    <span class="hljs-keyword">return</span> sinIn + noise;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="DitherNode"><a href="#DitherNode" class="headerlink" title="DitherNode"></a>DitherNode</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">Unity_Dither</span><span class="hljs-params">(<span class="hljs-type">float</span> In, float2 ScreenPosition)</span></span><br><span class="hljs-function"></span>&#123;<br>    float2 uv = ScreenPosition.xy * _ScreenParams.xy;<br>    <span class="hljs-type">float</span> DITHER_THRESHOLDS[<span class="hljs-number">16</span>] =<br>    &#123;<br>        <span class="hljs-number">1.0</span> / <span class="hljs-number">17.0</span>,  <span class="hljs-number">9.0</span> / <span class="hljs-number">17.0</span>,  <span class="hljs-number">3.0</span> / <span class="hljs-number">17.0</span>, <span class="hljs-number">11.0</span> / <span class="hljs-number">17.0</span>,<br>        <span class="hljs-number">13.0</span> / <span class="hljs-number">17.0</span>,  <span class="hljs-number">5.0</span> / <span class="hljs-number">17.0</span>, <span class="hljs-number">15.0</span> / <span class="hljs-number">17.0</span>,  <span class="hljs-number">7.0</span> / <span class="hljs-number">17.0</span>,<br>        <span class="hljs-number">4.0</span> / <span class="hljs-number">17.0</span>, <span class="hljs-number">12.0</span> / <span class="hljs-number">17.0</span>,  <span class="hljs-number">2.0</span> / <span class="hljs-number">17.0</span>, <span class="hljs-number">10.0</span> / <span class="hljs-number">17.0</span>,<br>        <span class="hljs-number">16.0</span> / <span class="hljs-number">17.0</span>,  <span class="hljs-number">8.0</span> / <span class="hljs-number">17.0</span>, <span class="hljs-number">14.0</span> / <span class="hljs-number">17.0</span>,  <span class="hljs-number">6.0</span> / <span class="hljs-number">17.0</span><br>    &#125;;<br>    uint index = (<span class="hljs-built_in">uint</span>(uv.x) % <span class="hljs-number">4</span>) * <span class="hljs-number">4</span> + <span class="hljs-built_in">uint</span>(uv.y) % <span class="hljs-number">4</span>;<br>    <span class="hljs-keyword">return</span> In - DITHER_THRESHOLDS[index];<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><h4 id="Remap"><a href="#Remap" class="headerlink" title="Remap"></a>Remap</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">Remap</span><span class="hljs-params">(<span class="hljs-type">float</span> In, float2 InMinMax, float2 OutMinMax)</span></span><br><span class="hljs-function"></span>&#123;<br>    Out = OutMinMax.x + (In - InMinMax.x) * (OutMinMax.y - OutMinMax.x) / (InMinMax.y - InMinMax.x);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="NormalFromHeight"><a href="#NormalFromHeight" class="headerlink" title="NormalFromHeight"></a>NormalFromHeight</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">float3 <span class="hljs-title">Unity_NormalFromHeight</span><span class="hljs-params">(<span class="hljs-type">float</span> In, <span class="hljs-type">float</span> Strength, float3 Position, float3x3 TangentMatrix)</span></span><br><span class="hljs-function"></span>&#123;<br>    float3 worldDerivativeX = <span class="hljs-built_in">ddx</span>(Position);<br>    float3 worldDerivativeY = <span class="hljs-built_in">ddy</span>(Position);<br><br>    float3 crossX = <span class="hljs-built_in">cross</span>(TangentMatrix[<span class="hljs-number">2</span>].xyz, worldDerivativeX);<br>    float3 crossY = <span class="hljs-built_in">cross</span>(worldDerivativeY, TangentMatrix[<span class="hljs-number">2</span>].xyz);<br>    <span class="hljs-type">float</span> d = <span class="hljs-built_in">dot</span>(worldDerivativeX, crossY);<br>    <span class="hljs-type">float</span> sgn = d &lt; <span class="hljs-number">0.0</span> ? (<span class="hljs-number">-1.0f</span>) : <span class="hljs-number">1.0f</span>;<br>    <span class="hljs-type">float</span> surface = sgn / <span class="hljs-built_in">max</span>(<span class="hljs-number">0.000000000000001192093f</span>, <span class="hljs-built_in">abs</span>(d));<br><br>    <span class="hljs-type">float</span> dHdx = <span class="hljs-built_in">ddx</span>(In);<br>    <span class="hljs-type">float</span> dHdy = <span class="hljs-built_in">ddy</span>(In);<br>    float3 surfGrad = surface * (dHdx*crossY + dHdy*crossX);<br>    float3 Out = <span class="hljs-built_in">SafeNormalize</span>(TangentMatrix[<span class="hljs-number">2</span>].xyz - (Strength * surfGrad));<br><br>    <span class="hljs-comment">// if (outputSpace == OutputSpace.Tangent)</span><br>    <span class="hljs-comment">//     Out = TransformWorldToTangent(Out, TangentMatrix);</span><br>    <br>    <span class="hljs-keyword">return</span> Out;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/wild/categories/Shader/" class="category-chain-item">Shader</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/wild/tags/Unity/">#Unity</a>
+      
+        <a href="/wild/tags/Shader/">#Shader</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Unity Shader Graph 源码学习</div>
+      <div>https://automask.github.io/wild/2022/06/26/lab/S_Unity_ShaderGraph/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Kyle Zhou</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年6月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/wild/2022/06/26/lab/S_Unity_Height_Normal/" title="Height Map to Normal Map">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Height Map to Normal Map</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/wild/2022/06/20/lab/S_Unity_Custom_Attribute/" title="Unity Custom Property Label 自定义属性显示">
+                        <span class="hidden-mobile">Unity Custom Property Label 自定义属性显示</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/wild/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"f9dba89ab6a250cd9cd5","clientSecret":"22c4c67de70580dd90facb24ee875cf337f44541","repo":"wild","owner":"automask","admin":["automask"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token"},
+          {
+            id: '8e24250073b41ad6e7a9f4e7287c9226'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+
+        <div id="music_div" style="position: fixed; bottom: 0px; left: 0px;">
+
+            <!-- 凡人 -->
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=180 height=80 
+                src="//music.163.com/outchain/player?type=2&id=1465290469&auto=0&height=66">
+            </iframe>
+
+            <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
+            <script src="/js/musicshow.js"></script>
+        </div>
+
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/wild/js/events.js" ></script>
+<script  src="/wild/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/wild/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/wild/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/wild/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
